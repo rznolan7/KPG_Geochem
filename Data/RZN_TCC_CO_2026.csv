@@ -1,0 +1,88 @@
+Analysis,Time,Date,ID,meter,Section,meter,details,Code,Location,notes,d 13C/12C  VPDB ,d 18O/16O  VPDB ,lat,lng
+10726,21:43:04,1/29/2026,CP1_0.1,0.1,CP1,0.1,,CP1-n-0.1,"Cotton Plant, Site 1",(below 0 marker at K-Pg),0.82,-2.08,34.6,-89
+10687,23:33:02,1/27/2026,CP1_0A,0,CP1,0,A,CP1-0A,"Cotton Plant, Site 1",,0.78,-1.88,34.6,-89
+10734,1:55:57,1/30/2026,CP1_0B,0,CP1,0,B,CP1-0B,"Cotton Plant, Site 1",,0.43,-1.88,34.6,-89
+10736,3:02:01,1/30/2026,CP1_M0.05,-0.05,CP1,-0.05,,CP1-n-0.05,"Cotton Plant, Site 1",(below 0 marker at K-Pg),1.38,-1.62,34.6,-89
+10722,19:33:24,1/29/2026,CP1_M0.1,-0.1,CP1,-0.1,,CP1-n-0.1,"Cotton Plant, Site 1",(below 0 marker at K-Pg),1.19,-1.73,34.6,-89
+10677,19:14:35,1/27/2026,CP1_M0.2,-0.2,CP1,-0.2,,CP1-n-0.2,"Cotton Plant, Site 1",(below 0 marker at K-Pg),0.99,-1.58,34.6,-89
+10689,0:21:15,1/28/2026,CP1_M0.3,-0.3,CP1,-0.3,,CP1-n-0.3,"Cotton Plant, Site 1",(below 0 marker at K-Pg),1.05,-1.56,34.6,-89
+10679,20:08:11,1/27/2026,CP1_M0.4,-0.4,CP1,-0.4,,CP1-n-0.4,"Cotton Plant, Site 1",(below 0 marker at K-Pg),0.96,-1.63,34.6,-89
+10685,22:43:15,1/27/2026,CP1_M0.5,-0.5,CP1,-0.5,,CP1-n-0.5,"Cotton Plant, Site 1",(below 0 marker at K-Pg),1.13,-1.68,34.6,-89
+10675,18:21:20,1/27/2026,CP1_M0.6,-0.6,CP1,-0.6,,CP1-n-0.6,"Cotton Plant, Site 1",(below 0 marker at K-Pg),1.08,-1.62,34.6,-89
+10724,20:38:32,1/29/2026,CP1_M0.7,-0.7,CP1,-0.7,,CP1-n-0.7,"Cotton Plant, Site 1",(below 0 marker at K-Pg),1.44,-1.66,34.6,-89
+10681,21:01:08,1/27/2026,CP1_M0.8,-0.8,CP1,-0.8,,CP1-n-0.8,"Cotton Plant, Site 1",(below 0 marker at K-Pg),1.01,-1.56,34.6,-89
+10732,0:50:58,1/30/2026,CP1_M0.9,-0.9,CP1,-0.9,,CP1-n-0.9,"Cotton Plant, Site 1",(below 0 marker at K-Pg),0.67,-1.78,34.6,-89
+10756,14:29:53,1/30/2026,CP1-0.2,0.2,CP1,0.2,,CP1-0.2,"Cotton Plant, Site 1",(below 0 marker at K-Pg),1.38,-1.61,34.6,-89
+10693,2:20:40,1/28/2026,CP2_0.1,0.1,CP2,0.1,,CP2-0.1,"Cotton Plant, Site 2",,-0.71,-2.18,34.6,-89
+10695,3:09:01,1/28/2026,CP2_0.2,0.2,CP2,0.2,,CP2-0.2,"Cotton Plant, Site 2",,1.01,-1.77,34.6,-89
+10697,4:02:49,1/28/2026,CP2_0.3,0.3,CP2,0.3,,CP2-0.3,"Cotton Plant, Site 2",,0.7,-1.97,34.6,-89
+10742,6:09:50,1/30/2026,CP2_0.55,0.55,CP2,0.55,,CP2-0.55,"Cotton Plant, Site 2",,1.02,-1.74,34.6,-89
+10740,5:15:19,1/30/2026,CP2_0.7,0.7,CP2,0.7,,CP2-0.7,"Cotton Plant, Site 2",,-2.79,-1.97,34.6,-89
+10692,1:48:04,1/28/2026,CP2_0.9,0.9,CP2,0.9,,CP2-0.9,"Cotton Plant, Site 2",,-0.22,-0.96,34.6,-89
+10744,7:21:27,1/30/2026,CP2_1.2,1.2,CP2,1.2,,CP2-1.2,"Cotton Plant, Site 2",,-0.46,-1.11,34.6,-89
+10797,17:07:32,2/1/2026,CP2-0.9,0.9,CP2,0.9,,CP2-0.9,"Cotton Plant, Site 2",,-0.36,-1.08,34.6,-89
+10739,4:35:23,1/30/2026,PG_0.05,0.05,PG,0.05,,PG-0.05,"Trim Cane Creek, Prefault Section: Ghost Unit",,0.72,-1.69,33.4,-88.9
+10759,16:17:31,1/30/2026,PG_0.1,0.1,PG,-0.1,,PG--0.1,"Trim Cane Creek, Prefault Section: Ghost Unit",might be pos or neg,0.48,-1.23,33.4,-88.9
+10772,0:13:45,1/31/2026,PG_0.1,0.1,PG,-0.1,,PG--0.1,"Trim Cane Creek, Prefault Section: Ghost Unit",might be pos or neg,0.83,-1.88,33.4,-88.9
+10764,19:19:32,1/30/2026,PG_0.15,0.15,PG,0.15,,PG-0.15,"Trim Cane Creek, Prefault Section: Ghost Unit",,0.44,-1.42,33.4,-88.9
+10767,21:11:35,1/30/2026,PG_0.2,0.2,PG,0.2,,PG-0.2,"Trim Cane Creek, Prefault Section: Ghost Unit",,0.58,-1.39,33.4,-88.9
+10733,1:24:25,1/30/2026,PG_0.25,0.25,PG,0.25,,PG-0.25,"Trim Cane Creek, Prefault Section: Ghost Unit",,0.28,-1.33,33.4,-88.9
+10777,3:05:43,1/31/2026,PG_0.3,0.3,PG,0.3,,PG-0.3,"Trim Cane Creek, Prefault Section: Ghost Unit",,0.6,-1.58,33.4,-88.9
+10761,17:26:02,1/30/2026,PG_0.35,0.35,PG,0.35,,PG-0.35,"Trim Cane Creek, Prefault Section: Ghost Unit",,0.71,-1.68,33.4,-88.9
+10747,9:01:41,1/30/2026,PG_0.4,0.4,PG,0.4,,PG-0.4,"Trim Cane Creek, Prefault Section: Ghost Unit",,0.46,-1.8,33.4,-88.9
+10760,16:51:57,1/30/2026,PG_0.45,0.45,PG,0.45,,PG-0.45,"Trim Cane Creek, Prefault Section: Ghost Unit",,0.42,-1.62,33.4,-88.9
+10765,19:57:45,1/30/2026,PG_0.5,0.5,PG,0.5,,PG-0.5,"Trim Cane Creek, Prefault Section: Ghost Unit",,-0.28,-2.25,33.4,-88.9
+10763,18:42:17,1/30/2026,PG_0.55,0.55,PG,0.55,,PG-0.55,"Trim Cane Creek, Prefault Section: Ghost Unit",,-0.19,-2.17,33.4,-88.9
+10743,6:45:41,1/30/2026,PG_0.6,0.6,PG,0.6,,PG-0.6,"Trim Cane Creek, Prefault Section: Ghost Unit",,-0.03,-2.84,33.4,-88.9
+10768,21:49:34,1/30/2026,PG_0.65,0.65,PG,0.65,,PG-0.65,"Trim Cane Creek, Prefault Section: Ghost Unit",,-0.48,-2.27,33.4,-88.9
+10735,2:29:03,1/30/2026,PG_0.7,0.7,PG,0.7,,PG-0.7,"Trim Cane Creek, Prefault Section: Ghost Unit",,-0.55,-2.32,33.4,-88.9
+10770,23:02:41,1/30/2026,PG_0.75,0.75,PG,0.75,,PG-0.75,"Trim Cane Creek, Prefault Section: Ghost Unit",,-0.47,-2.12,33.4,-88.9
+10758,15:42:38,1/30/2026,PG_0.8,0.8,PG,0.8,,PG-0.8,"Trim Cane Creek, Prefault Section: Ghost Unit",,-0.04,-2.25,33.4,-88.9
+10769,22:23:48,1/30/2026,PG_0.85,0.85,PG,0.85,,PG-0.85,"Trim Cane Creek, Prefault Section: Ghost Unit",,-0.02,-2.51,33.4,-88.9
+10773,0:50:41,1/31/2026,PG_0.9,0.9,PG,0.9,,PG-0.9,"Trim Cane Creek, Prefault Section: Ghost Unit",,0.14,-1.69,33.4,-88.9
+10771,23:41:28,1/30/2026,PG_0.95,0.95,PG,0.95,,PG-0.95,"Trim Cane Creek, Prefault Section: Ghost Unit",,0.18,-1.55,33.4,-88.9
+10776,2:32:19,1/31/2026,PG_1.0,1,PG,1,,PG-1,"Trim Cane Creek, Prefault Section: Ghost Unit",,0.09,-1.77,33.4,-88.9
+10745,7:53:44,1/30/2026,PG_1.05,1.05,PG,1.05,,PG-1.05,"Trim Cane Creek, Prefault Section: Ghost Unit",,-0.12,-2.17,33.4,-88.9
+10731,0:18:17,1/30/2026,PG_1.1,1.1,PG,1.1,,PG-1.1,"Trim Cane Creek, Prefault Section: Ghost Unit",,0.02,-1.95,33.4,-88.9
+10749,10:04:32,1/30/2026,PG_1.15,1.15,PG,1.15,,PG-1.15,"Trim Cane Creek, Prefault Section: Ghost Unit",,-0.28,-2.34,33.4,-88.9
+10782,6:20:51,1/31/2026,PG_1.2,1.2,PG,1.2,,PG-1.2,"Trim Cane Creek, Prefault Section: Ghost Unit",,-0.29,-2.23,33.4,-88.9
+10766,20:34:09,1/30/2026,PG_1.25,1.25,PG,1.25,,PG-1.25,"Trim Cane Creek, Prefault Section: Ghost Unit",,-0.03,-1.42,33.4,-88.9
+10778,3:46:24,1/31/2026,PG_1.3,1.3,PG,1.3,,PG-1.3,"Trim Cane Creek, Prefault Section: Ghost Unit",,-0.32,-2.14,33.4,-88.9
+10779,4:26:53,1/31/2026,PG_1.35,1.35,PG,1.35,,PG-1.35,"Trim Cane Creek, Prefault Section: Ghost Unit",,-0.03,-1.77,33.4,-88.9
+10762,18:05:59,1/30/2026,PG_1.3IB,1.3,PG,1.3,,PG-1.3-ib,"Trim Cane Creek, Prefault Section: Ghost Unit",,0.06,-2.13,33.4,-88.9
+10780,5:04:44,1/31/2026,PG_1.3OB,1.3,PG,1.3,,PG-1.3-ob,"Trim Cane Creek, Prefault Section: Ghost Unit",,-0.3,-1.9,33.4,-88.9
+10781,5:46:31,1/31/2026,PG_1.4,1.4,PG,1.4,,PG-1.4,"Trim Cane Creek, Prefault Section: Ghost Unit",,-0.19,-2.12,33.4,-88.9
+10757,15:03:16,1/30/2026,PG_SB1,-0.1,PG,-0.1,SB1,PG-SB1,"Trim Cane Creek, Prefault Section: Ghost Unit",spherule bed 1,0.6,-1.4,33.4,-88.9
+10737,3:32:05,1/30/2026,PG_SB2,0,PG,0,SB2,PG-SB2,"Trim Cane Creek, Prefault Section: Ghost Unit",spherule bed 2,0.34,-1.86,33.4,-88.9
+10712,14:27:31,1/29/2026,"TCCF_0,0",0,TCC-F,0,,TCC-F-0,Trim Cane Creek: Fault Section,0 defined at top of SB2,0.14,-1.13,33.4,-88.9
+10708,12:24:11,1/29/2026,TCCF_0.1,0.1,TCC-F,0.1,,TCC-F-0.1,Trim Cane Creek: Fault Section,,0.33,-1.31,33.4,-88.9
+10711,13:53:06,1/29/2026,TCCF_0.2,0.2,TCC-F,0.2,,TCC-F-0.2,Trim Cane Creek: Fault Section,,0.7,-1.55,33.4,-88.9
+10720,18:23:54,1/29/2026,TCCF_0.3,0.3,TCC-F,0.3,,TCC-F-0.3,Trim Cane Creek: Fault Section,,0.71,-1.6,33.4,-88.9
+10727,22:13:17,1/29/2026,TCCF_0.4,0.4,TCC-F,0.4,,TCC-F-0.4,Trim Cane Creek: Fault Section,,0.56,-1.54,33.4,-88.9
+10709,12:54:51,1/29/2026,TCCF_0.5,0.5,TCC-F,0.5,,TCC-F-0.5,Trim Cane Creek: Fault Section,,0.59,-1.6,33.4,-88.9
+10723,20:04:12,1/29/2026,TCCF_0.6,0.6,TCC-F,0.6,,TCC-F-0.6,Trim Cane Creek: Fault Section,,0.16,-1.24,33.4,-88.9
+10718,17:25:44,1/29/2026,TCCF_0.7,0.7,TCC-F,0.7,,TCC-F-0.7,Trim Cane Creek: Fault Section,,0.16,-1.93,33.4,-88.9
+10725,21:12:06,1/29/2026,TCCF_0.8,0.8,TCC-F,0.8,,TCC-F-0.8,Trim Cane Creek: Fault Section,,-0.19,-2.5,33.4,-88.9
+10715,16:03:59,1/29/2026,TCCF_0.9,0.9,TCC-F,0.9,,TCC-F-0.9,Trim Cane Creek: Fault Section,,-0.44,-2.57,33.4,-88.9
+10755,13:56:32,1/30/2026,TCCF_1.0,1,TCC-F,1,,TCC-F-1,Trim Cane Creek: Fault Section,,-0.32,-2.25,33.4,-88.9
+10714,15:32:39,1/29/2026,TCCF_1.1,1.1,TCC-F,1.1,,TCC-F-1.1,Trim Cane Creek: Fault Section,,-0.75,-2.36,33.4,-88.9
+10713,15:00:15,1/29/2026,TCCF_1.2,1.2,TCC-F,1.2,,TCC-F-1.2,Trim Cane Creek: Fault Section,,-0.3,-2.38,33.4,-88.9
+10721,18:59:45,1/29/2026,TCCF_PBC,-0.2,TCC-F,,PBC,TCC-F-PBC,Trim Cane Creek: Fault Section,Prarie Bluff Chalk,0.39,-2.18,33.4,-88.9
+10719,17:53:37,1/29/2026,TCCF_SB1,-0.1,TCC-F,,SB1,TCC-F-SB1,Trim Cane Creek: Fault Section,spherule Bed 1,0.56,-2.79,33.4,-88.9
+10710,13:24:19,1/29/2026,TCCF_SB2,0,TCC-F,,SB2,TCC-F-SB2,Trim Cane Creek: Fault Section,spherule Bed 2,0.32,-2.2,33.4,-88.9
+10662,11:30:03,1/27/2026,WC_0,0,WC,0,,WC-0,"Wahalak Creek, MS",,-0.68,-3.69,33.9,-88.6
+10665,13:22:46,1/27/2026,WC_0.1,0.1,WC,0.1,,WC-0.1,"Wahalak Creek, MS",,-0.3,-3.61,33.9,-88.6
+10669,15:17:50,1/27/2026,WC_0.2,0.2,WC,0.2,,WC-0.2,"Wahalak Creek, MS",might be pos or neg,-1.64,-3.22,33.9,-88.6
+10674,17:53:23,1/27/2026,WC_0.2,0.2,WC,0.2,,WC-0.2,"Wahalak Creek, MS",might be pos or neg,0.8,-2.12,33.9,-88.6
+10673,17:18:38,1/27/2026,WC_0.4,0.4,WC,0.4,,WC-0.4,"Wahalak Creek, MS",,-0.29,-3.33,33.9,-88.6
+10663,12:08:29,1/27/2026,WC_0.7,0.7,WC,0.7,,WC-0.7,"Wahalak Creek, MS",,-0.16,-3.09,33.9,-88.6
+10667,14:19:47,1/27/2026,WC_0.9,0.9,WC,0.9,,WC-0.9,"Wahalak Creek, MS",,0.15,-3.04,33.9,-88.6
+10664,12:44:08,1/27/2026,WC_1,1,WC,1,,WC-1,"Wahalak Creek, MS",,0.09,-2.96,33.9,-88.6
+10671,16:17:39,1/27/2026,WC_1.1B,1.1,WC,1.1,,WC-1.1-B,"Wahalak Creek, MS",two samples labelled 1.1,-0.04,-3.01,33.9,-88.6
+10792,14:20:03,2/1/2026,WC-0.2,0.2,WC,0.2,,WC-0.2,"Wahalak Creek, MS",might be pos or neg,-1.61,-3.45,33.9,-88.6
+10795,16:01:22,2/1/2026,WC-0.3,0.3,WC,0.3,,WC-0.3,"Wahalak Creek, MS",,-0.43,-3.56,33.9,-88.6
+10791,13:50:08,2/1/2026,WC-0.5,0.5,WC,0.5,,WC-0.5,"Wahalak Creek, MS",,0.16,-3.14,33.9,-88.6
+10789,12:40:39,2/1/2026,WC-0.8,0.8,WC,0.8,,WC-0.8,"Wahalak Creek, MS",,0.04,-3.11,33.9,-88.6
+10790,13:13:46,2/1/2026,WC-0.9,0.9,WC,0.9,,WC-0.9,"Wahalak Creek, MS",,0.15,-3.06,33.9,-88.6
+10793,14:56:26,2/1/2026,WC-1.1A,1.1,WC,1.1,,WC-1.1-A,"Wahalak Creek, MS",,-0.1,-3.29,33.9,-88.6
+10794,15:31:11,2/1/2026,WC-1.1B,1.1,WC,1.1,,WC-1.1-B,"Wahalak Creek, MS",two samples labelled 1.1,0.02,-3.08,33.9,-88.6

@@ -1,0 +1,561 @@
+function [ri,xc,t_out,Dist,w_scale,overlap]=dtw(x,r,tx,tr,g,edge,flag_norm,flag_rmrpt,qplot)
+
+%function [ri,xc,Dist,w_scale,overlap]=dtw(x,r,tx,tr,g,edge,flag_norm,flag_rmrpt,qplot)
+%
+% Computes the optimatal alignments between a target and candidate sequence
+% for the specified edge and g parameters. See the manuscript for a
+% description of these parameters.
+% 
+% Hay et al. (2019) "A Library of Early Cambrian Chemostratigraphic 
+% Correlations from a Reproducible Algorithm", Geology
+% last edited February 28, 2019 by Carling Hay
+%
+%
+% INPUTS:
+% ----------------------------------
+% x: target vector
+% r: candidate vector, can't have NaN's
+% tx: time/depth vector for x
+% tr: time/depth vector for r
+% g: weighting term for going off-diagonal
+% edge: weighting term for the edges
+% flag_norm: 1 if you want to normalize the input sections
+% flag_rmrpt: 1 if you want to remove repeating points within the aligned section
+% qplot: display output - original and aligned sequences, cost matrix with alignment path
+%
+% OUTPUTS:
+% -------------
+% ri: the aligned (warped) version of r
+% xc: correlation between x and r after warping
+% Dist: unnormalized distance between t and r
+% w_scale: average scaling factor
+% overlap: the number of data points that overlap
+
+set(0,'DefaultAxesFontName','Sans Serif')
+set(0,'DefaultAxesFontSize',14)
+
+% set defaults if not specified
+if nargin<7
+    g = 1.05;
+    edge = 1;
+    qplot=0;  
+  
+    flag_norm = 0;
+end
+
+% save original versions of the time series, xo and ro
+xo=x;
+ro=r;
+
+% demeans and normalize the input time series to unit std.
+if flag_norm
+    x=normPH(x(:)');
+    r=normPH(r(:)');
+end
+
+% sort the time series to ensure input is monotonic
+[tx,ind] = sort(tx);
+x = x(ind);
+
+[tr,ind] = sort(tr);
+r = r(ind);
+
+[~,N]=size(x);
+[~,M]=size(r);
+
+% create matrix of the squared difference b/w zero-mean x and r, r - columns, x - rows 
+d=(repmat(x(:),1,M)-repmat(r(:)',N,1)).^2; 
+
+% impose the edge values
+d(1,:)=d(1,:)*edge;
+d(:,end)=d(:,end)*edge;
+d(end,:)=d(end,:)*edge;
+d(:,1)=d(:,1)*edge;
+
+D=zeros(size(d));
+D(1,1)=d(1,1);
+
+% fill the the edges of the cummulative difference matrix, D
+if 1
+  for n=2:N
+    D(n,1)=d(n,1)+D(n-1,1);
+  end
+  for m=2:M
+    D(1,m)=d(1,m)+D(1,m-1);
+  end
+end
+
+%%  Look for the minimum path
+
+% look two steps ahead
+n=2;
+for m=2:M
+    % check the three preceeding squares to determine square with minimum value
+    D(n,m)=d(n,m)+min([g*D(n-1,m),D(n-1,m-1),g*D(n,m-1)]);
+end
+
+m=2;
+for n=2:N
+    % check the three preceeding squares to determine square with minimum value
+    D(n,m)=d(n,m)+min([g*D(n-1,m),D(n-1,m-1),g*D(n,m-1)]);
+end
+
+for n=3:N
+  for m=3:M
+    % check the 8 preceeding squares to determine square with minimum value 
+    D(n,m)=d(n,m)+min([g*D(n-1,m),D(n-1,m-1),g*D(n,m-1),1.1*g*D(n,m-2),1.05*g*D(n-1,m-2),D(n-2,m-2),1.05*g*D(n-2,m-1),1.1*g*D(n-2,m)]);  
+  end
+end
+
+% start at the end point (N,M) and work your way back along the minimum path
+Dist=D(N,M);
+n=N;
+m=M;
+k=1;
+w=[];
+w(1,:)=[N,M];
+while ((n+m)~=2)
+    if (n-1)==0  % if you get to the start of the column, move over one row
+        m=m-1;
+    elseif (m-1)==0 % if you get to the start of the row, move over one column
+        n=n-1;
+    elseif (n-2)==0 && (m-2)==0
+        n=n-1;
+        m=m-1;
+    elseif (n-2)==0
+        [~,number]=min([D(n-1,m),D(n,m-1),D(n-1,m-1),D(n,m-2) D(n-1,m-2)]);
+        switch number
+            case 1
+                n=n-1;  % follow the path up a row
+            case 2
+                m=m-1; % follow the path to the left
+            case 3
+                n=n-1; % follow the diagonal path
+                m=m-1;
+            case 4
+                m=m-2;  % follow the path to the left 2
+            case 5
+                n=n-1; % follow the path to the left 2 and down 1
+                m=m-2;
+        end
+    elseif (m-2)==0
+        [~,number]=min([D(n-1,m),D(n,m-1),D(n-1,m-1),D(n-2,m) D(n-2,m-1)]);
+        switch number
+            case 1
+                n=n-1;  % follow the path up a row
+            case 2
+                m=m-1; % follow the path to the left
+            case 3
+                n=n-1; % follow the diagonal path 
+                m=m-1;
+            case 4
+                n=n-2;  % follow the path to the down 2
+            case 5
+                n=n-2; % follow the path to the left 1 and down 2
+                m=m-1;
+        end        
+    else
+        [~,number]=min([D(n-1,m),D(n,m-1),D(n-1,m-1),D(n,m-2),D(n-1,m-2),D(n-2,m-2),D(n-2,m-1),D(n-2,m)]);
+        switch number
+            case 1
+                n=n-1;  % follow the path up a row
+            case 2
+                m=m-1; % follow the path to the left
+            case 3
+                n=n-1; % follow the diagonal path
+                m=m-1;
+            case 4
+               n=[n;n]; % follow the path to the left 2 step
+               m=[m-1;m-2];           
+            case 5
+                n=[NaN;n-1]; % follow the path to the left 2 and down 1
+                m=[m-1;m-2];
+            case 6
+                n=[n-1;n-2]; % follow the diagonal path 2 steps
+                m=[m-1;m-2];
+            case 7
+                n=n-2; % follow the path to the left 2 and down 2
+                m=m-1;
+            case 8 
+                n=[n-1;n-2]; % follow the path down 2 steps
+                m=[m;m];
+        end
+    end
+    k=k+1;
+    w=cat(1,w,[n,m]);
+    
+    % extract the final value to step forward in time
+    n = n(end);
+    m = m(end);
+end
+
+%% Extract the time and data along the warping path 
+% Ensures warped time is monotonic.
+% Option to have warped time starting points averaged or not
+
+%Average values of y at repeated values of x, and ensure x is monotonic
+if 1 % set to 1 if you don't want to average over the first time points
+    % if you want to do this, you also need to compute a warped time
+    pl=find( (w(:,1)>1 & w(:,2)>1) | isnan(w(:,1)));  % also keep the NaN's -- needed to interp depth
+    pl=[pl; pl(end)+1];
+    
+    % find the end indices that are repeating
+    ind1 = find(w(:,2)==w(1,2));
+    pl = pl(ind1(end):end);
+    
+    % get the extra points that pile up at the end
+    ind2 = find(w(:,1)==w(1,1));
+    pl = pl(ind2(end):end);
+    
+    % remove repeating warped points in the new time series
+    if flag_rmrpt
+        [~,ind3] = unique(w(:,2),'rows','stable'); % finds the unique rows in w(:,2)
+        [~,~,ind] = intersect(ind3,pl);% finds the unique rows that are still included in pl
+        pl = pl(ind);
+    end
+    
+    % find the NaN's -- this indices need to have interpolated depths
+    ireal = find(~isnan(w(:,1)));
+    inan = find(isnan(w(:,1)));
+    
+    % extract the non-NaN depths
+    [~,~,ind] = intersect(ireal,pl);
+    
+    tmp = NaN(length(pl),2);
+    tmp(ind,1) = tx(w(pl(ind),1));
+    tmp(ind,2) = ro(w(pl(ind),2));
+    
+    % find the NaN points, interpolate between the adjacent depths
+    [~,~,ind] = intersect(inan,pl);
+    
+    for ii=1:length(ind)
+        tmp(ind(ii),2) = ro(w(pl(ind(ii)),2));  % use the known data points
+        tmp(ind(ii),1) = 0.5*(tx(w(pl(ind(ii))-1,1)) + tx(w(pl(ind(ii))+1,1)));  % interpolate between the depth points
+    end
+    
+    tw = fliplr(tmp(:,1)');
+    rw = fliplr(tmp(:,2)');
+   
+    % get the extra points at the end  -- only if unique
+    append_t = fliplr(tr(w(1:ind2(end),2)));
+    append_r = fliplr(ro(w(1:ind2(end),2)));
+    
+    % get the extra start points that fall before the target time series
+    start_t = fliplr(tr(w(pl(end)+2:end,2)));
+    start_r = fliplr(ro(w(pl(end)+2:end,2)));
+    
+    % compute the warping scaling factor
+    w_scale = (tx(w(1,1))-tx(w(pl(end),1)))/(tr(w(pl(1),2))-tr(w(pl(end),2)));
+    
+    
+    % shift the extra time at the ends, then scale it
+    if ~isempty(start_t)
+        start_t = w_scale*(start_t - start_t(end)) + tw(1);
+    end
+    
+    if ~isempty(append_t)
+        append_t = w_scale*(append_t - append_t(1)) + tw(end);
+    end
+    
+else % include averaging over the first few time points
+    tw=fliplr(tx(w(:,1))); % use the rows of w to get the matching time
+    rw=fliplr(ro(w(:,2))); % use the cols of w to get the corresponding values from original time series (not zero mean)
+end
+
+%initialize matrix
+pl=find(diff(tw)~=0);
+dj=max(diff([0 pl length(tw)]));
+tw2=NaN(dj,length(pl)+1);
+rw2=NaN(dj,length(pl)+1);
+
+%initial values
+tw2(1,1)=tw(1);
+rw2(1,1)=rw(1);
+ct2=1;
+ct3=1;
+
+%loop through all entries
+for ct=2:length(tw)
+    if tw(ct)~=tw(ct-1)
+        ct2=ct2+1;
+        ct3=1;
+    else
+        ct3=ct3+1;
+    end
+    tw2(ct3,ct2)=tw(ct);
+    rw2(ct3,ct2)=rw(ct);
+end
+
+%average matrix into a monotonic vector
+tw3=tw2(1,:);
+
+% average everything but the last point
+if dj~=1
+    rw3=nanmean(rw2);
+    rw3(end) = rw2(1,end);
+else
+    rw3=rw2;
+end
+
+% get the sequences not averaged
+r_all = rw2(~isnan(rw2(:))); 
+t_all = tw2(~isnan(tw2(:))); 
+ 
+% check dimensions of r_all, should be a row vector
+if size(r_all,1)~=1
+    r_all = r_all';
+    t_all = t_all';
+end
+
+%% Compute the correlation coefficient 
+
+% make sure that length of t_out is the same as tx for computing xc
+if length(tw3)~=length(tx) 
+    [~,ind_tw,ind_tx] = intersect(tw3,tx);
+    
+    t_out =tw3(ind_tw);
+    ri = rw3(ind_tw);
+    
+    tx_out = tx(ind_tx);
+    xo_out = xo(ind_tx);
+   
+else
+    t_out = tw3;
+    ri = rw3;
+    
+    tx_out = tx;
+    xo_out = xo;
+end
+
+
+% compute correlation co-efficient
+if (length(ri)/length(r))<0.1 % specifies a minimum of 10% overlap
+    xc=NaN;
+else
+    xc=xcPH(ri,xo_out,1);
+end
+
+overlap = length(ri);
+
+%% compute the output sequence
+
+% get the full sequence
+if 0 % if you want to use the averaged sequence, set this to 1
+    ri = rw3;  
+    t_out = tw3;
+else % if you have points with the same depth
+    ri = r_all; 
+    t_out = t_all; 
+end
+
+% add extra values to the start of the section
+[~, ind]=unique(start_t);
+if length(ind)>1
+    ri = [start_r(ind(1:end-1)) ri];
+    t_out = [start_t(ind(1:end-1)) t_out];
+end
+
+[~, ind]=unique(append_t);
+if length(ind)>1
+    ri = [ri append_r(ind(2:end))];
+    t_out = [t_out append_t(ind(2:end))];
+end
+
+%% plot everything
+if qplot
+    colormap hot; h=colormap; colormap(flipud(h));
+    num=5;
+    for ct=1:num-1
+        sp(ct,:)=(2:num)+(ct-1)*num;
+        sp2(ct)=(ct-1)*num+1;
+    end
+    subplot(num,num,sp(:));
+    cla; hold on;
+    imagesc(d); colorbar; caxis([0 60]) % plot the squared distance matrix, d
+    axis tight; axis off;
+    %h=plot(1:length(x),1:length(x),'k--'); set(h,'linewidth',2);  % plot a line along the diagonal
+    h=plot(1:length(r),1:length(r),'k--'); set(h,'linewidth',2);  % plot a line along the diagonal
+    pl=find( (w(:,1)>1) & (w(:,2)>1));   % plot the minimum distance path
+    h=plot(w(pl,2),w(pl,1),'k'); set(h,'linewidth',2);
+    
+    set(gca,'ydir','normal');
+    set(gca,'yaxisloc','right');
+    set(gca,'xaxisloc','top');
+    
+    subplot(num,num,sp2'); cla; hold on;
+    h=plot(xo,tx,'*r'); set(h,'linewidth',1);  % plot the "known" time series xo
+    h=plot(ri,t_out,'*k'); set(h,'linewidth',1);  % plot the new warped time series
+    axis tight;
+    h=suptitle(['cross-correlation: ',num2str(xc,2)]); %font(h,12);
+    h=xlabel('d\delta^{13}C'); 
+    h=ylabel('depth (m)'); 
+    set(gca,'xaxisloc','top');
+    
+    
+    subplot(num,num,num*(num-1)+2:num*num)
+    h=plot(tr,ro,'*k'); set(h,'linewidth',1); % plot the original non-warped time series, r0
+    axis tight;
+    h=ylabel('d\delta^{13}C'); 
+    h=xlabel('time (m)'); 
+    set(gca,'yaxisloc','right');
+    drawnow;
+end
+
+%% Below are functions used in the script
+
+function [odata]=normPH(idata)
+%This demeans and normalizes a given input function to unit std.   
+%NaNs are ignored and left as are.
+%
+%[odata]=normPH(idata);
+
+odata=idata-nanmean(idata(:));
+odata=odata/nanstd(odata(:));
+end
+
+
+function [XC]=xcPH(y1,y2,type,demean,window)
+%This function computes the cross correlation (r^2) at zero lag for
+%two input records.  Records should be sampled at the same 
+%unifrom intervals.
+%
+%records y1 and y2, default is r^2, but if type==1 then returns r.
+%
+%function [XC]=xcPH(y1,y2,type,demean);
+%
+%y1:     1st record 
+%y2:     2nd record
+%type:   0=squared cross-correlation, 1=cross-correlation       (default=0)
+%demean: 0=leave the means of y1 and y2 alone, 1=take mean out. (default=1)
+%window  0=no, 1=yes, use a Hanning window (default=0);
+y1=y1(:); y2=y2(:);
+
+if nargin<3, type=0; end
+if nargin<4, demean=1; end
+if nargin<5, window=0; end
+
+pl=find(isnan(y1)==0 & isnan(y2)==0);
+y1=y1(pl); y2=y2(pl);
+
+if demean==1
+    y1=y1-mean(y1);
+    y2=y2-mean(y2);
+end
+
+if window==1
+    y1=y1.*hanning(length(y1));
+    y2=y2.*hanning(length(y2));
+end
+
+if isreal(y1) & isreal(y2)
+    XC= sum(y1.*y2)/sqrt(sum(y1.*y1)*sum(y2.*y2));
+else
+    XC= sum(y1.*conj(y2))/sqrt(sum(y1.*conj(y1))*sum(y2.*conj(y2)));
+end
+
+if type~=1, XC=XC^2; end
+
+end
+
+function hout=suptitle(str)
+%SUPTITLE Puts a title above all subplots.
+%	SUPTITLE('text') adds text to the top of the figure
+%	above all subplots (a "super title"). Use this function
+%	after all subplot commands.
+
+% Drea Thomas 6/15/95 drea@mathworks.com
+
+% Warning: If the figure or axis units are non-default, this
+% will break.
+
+% Parameters used to position the supertitle.
+
+% Amount of the figure window devoted to subplots
+plotregion = .92;
+
+% Y position of title in normalized coordinates
+titleypos  = .95;
+
+% Fontsize for supertitle
+fs = get(gcf,'defaultaxesfontsize')+4;
+
+% Fudge factor to adjust y spacing between subplots
+fudge=1;
+
+haold = gca;
+figunits = get(gcf,'units');
+
+% Get the (approximate) difference between full height (plot + title
+% + xlabel) and bounding rectangle.
+
+	if (~strcmp(figunits,'pixels'))
+		set(gcf,'units','pixels');
+		pos = get(gcf,'position');
+		set(gcf,'units',figunits);
+    else
+		pos = get(gcf,'position');
+	end
+	ff = (fs-4)*1.27*5/pos(4)*fudge;
+
+        % The 5 here reflects about 3 characters of height below
+        % an axis and 2 above. 1.27 is pixels per point.
+
+% Determine the bounding rectange for all the plots
+
+% h = findobj('Type','axes');   
+
+% findobj is a 4.2 thing.. if you don't have 4.2 comment out
+% the next line and uncomment the following block.
+	
+h = findobj(gcf,'Type','axes');  % Change suggested by Stacy J. Hills
+
+% If you don't have 4.2, use this code instead
+%ch = get(gcf,'children');
+%h=[];
+%for i=1:length(ch),
+%  if strcmp(get(ch(i),'type'),'axes'),
+%    h=[h,ch(i)];
+%  end
+%end
+
+max_y=0;
+min_y=1;
+
+oldtitle =0;
+for i=1:length(h)
+	if (~strcmp(get(h(i),'Tag'),'suptitle'))
+		pos=get(h(i),'pos');
+		if (pos(2) < min_y), min_y=pos(2)-ff/5*3;end
+		if (pos(4)+pos(2) > max_y), max_y=pos(4)+pos(2)+ff/5*2;end
+    else
+		oldtitle = h(i);
+	end
+end
+
+if max_y > plotregion
+	scale = (plotregion-min_y)/(max_y-min_y);
+	for i=1:length(h)
+		pos = get(h(i),'position');
+		pos(2) = (pos(2)-min_y)*scale+min_y;
+		pos(4) = pos(4)*scale-(1-scale)*ff/5*3;
+		set(h(i),'position',pos);
+	end
+end
+
+np = get(gcf,'nextplot');
+set(gcf,'nextplot','add');
+if (oldtitle)
+	delete(oldtitle);
+end
+ha=axes('pos',[0 1 1 1],'visible','off','Tag','suptitle');
+ht=text(.5,titleypos-1,str);set(ht,'horizontalalignment','center','fontsize',fs);
+set(gcf,'nextplot',np);
+axes(haold);
+if nargout
+	hout=ht;
+end
+
+end
+
+end
+

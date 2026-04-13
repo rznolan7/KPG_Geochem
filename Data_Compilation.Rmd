@@ -1,0 +1,350 @@
+---
+title: "FunctionalKPg"
+output: html_document
+date: "2026-01-23"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, results = F)
+```
+
+```{R}
+#install necessary packages
+if (!require(rstudioapi)){install.packages("rstudioapi")}
+me <- (rstudioapi::getActiveDocumentContext()$path) #get current file name
+wd <- dirname(me)
+
+if (!require(renv)){ install.packages("renv")}
+
+#because I use an old version of iNEXT
+if(!require(iNEXT)){remotes::install_version("iNEXT", version = "2.0.20")}
+
+packs <- unique(renv::dependencies(me)$Package) #list of packages needed for this document
+
+for (i in seq_along(packs)){
+  if (!require(packs[i], character.only=T)){ #install any missing packs
+    install.packages(packs[i])
+  }
+}
+
+lapply(packs, library, character.only=T) #load packages
+
+rm(me, i) #clean env
+
+```
+
+
+## Import Data
+
+```{r}
+mydata <- read.csv(paste0(wd, "/Data/RZN_TCC_CO_2026.csv"))
+#names of columns to choose
+names(mydata)
+#pick relevant columns to add to working data
+wk_data <- mydata[,c(5,6,12:15)] #meter, Section, d13C, d18O, lat, lng
+
+#rename columns to make it easier to see whats happening (new_name = old_name)
+library(dplyr)
+wk_data <- wk_data %>% rename(
+  "d13C" = "d.13C.12C..VPDB",
+  "d18O" = "d.18O.16O..VPDB"
+)
+
+#add column to working data that indicates the data is mine
+wk_data$Origin <- "Nolan"
+wk_data$Biozone <- "TBD"
+
+
+```
+
+```{r}
+#data from Trim Cane
+#cols to match:
+names(wk_data)
+
+#Sosa-Montes de Oca, C. (2024). Intense changes in the main source of organic carbon to the ocean following the Cretaceous-Paleogene boundary (dataset). https://doi 10.17605/OSF.IO/ZMA9G
+
+tcc_SMdO24 <- read.csv(paste0(wd, "/Data/SMdO_TCC_2024.csv")) #read in dataset
+
+#Sosa Montes de Oca et al 2024 calculated sedimentation rates within biozones for TCC:
+sed_rates <- read.csv(paste0(wd, "/Data/SMdO_TCC_Biozones.csv")) #read in data
+
+SMdO <- merge.data.frame(tcc_SMdO24[,c("Sample", "meter", "d13C_VPDB", "d18O_VPDB")], sed_rates[,c("Sample", "Biozone")], by = "Sample")
+
+SMdO$Section <- "TCC" #label as from Trim Cane
+SMdO$Origin <- "Sosa-Montes_de_Oca" #label origin of data
+
+#add lat and lng from my data for TCC-F
+SMdO$lat <- (mydata %>% filter(Section == "TCC-F"))$lat[1]
+SMdO$lng <- (mydata %>% filter(Section == "TCC-F"))$lng[1]
+
+SMdO <- SMdO %>% rename( "d13C" = "d13C_VPDB", "d18O" = "d18O_VPDB") #rename for matching 
+SMdO <- SMdO[,-1]
+
+
+sed_rates <- distinct(sed_rates, pick(Biozone), .keep_all = T) #filter to just one row per biozone
+
+rm(tcc_SMdO24)
+
+
+
+```
+
+```{r}
+#Other Data
+
+#Jones etal 2023 - El Kef
+elkef_J23 <- read.csv(paste0(wd, "/Data/Jones_etal_2023_ElKef.csv"))
+elkef_J23$Section <- paste(elkef_J23$Hole, elkef_J23$Core)
+kef <- elkef_J23[, c("Composite.core.depth..mcd.", "Section", "d13C", "d18O", "Biozone")]
+kef <- kef %>% rename("meter" = "Composite.core.depth..mcd.")
+kef$Origin <- "Jones"
+kef$lat <- 36.2
+kef$lng <- 8.6
+
+rm(elkef_J23)
+
+#Jones, Heather L.; al., et (2022). Supplemental Material: Stratigraphy of the Cretaceous/Paleogene (K/Pg) boundary at the Global Stratotype Section and Point (GSSP) in El Kef, Tunisia: New insights from the El Kef Coring Project. Geological Society of America. Journal contribution. https://doi.org/10.1130/GSAB.S.21445755.v1
+
+#El Kef Data Notes
+#Hole A - KPg is in core 16
+#Holes B and C are further up in Danian
+#Holes D and D have KPg at core 10
+
+#Sepulveda et al 2019 - 
+#Sepúlveda, Julio; Alegret, Laia; Haddad, Emily; Cao, Changqun; Summons, Roger E; Thomas, Ellen (2019): Bulk elemental and stable isotope data across the Cretaceous-Paleogene boundary [dataset]. PANGAEA, https://doi.org/10.1594/PANGAEA.902759, 
+#Supplement to: Sepúlveda, Julio; Alegret, Laia; Thomas, Ellen; Haddad, Emily; Cao, Changqun; Summons, Roger E (2019): Stable Isotope Constraints on Marine Productivity Across the Cretaceous-Paleogene Mass Extinction. Paleoceanography and Paleoclimatology, 34(7), 1195-1217, https://doi.org/10.1029/2018PA003442
+euro_S19 <- read.csv(paste0(wd, "/Data/Sepulveda_etal_2019.csv"))
+
+euro <- euro_S19[,c(1,3:4,6,10,12)] %>% rename("Section" = "Event",
+                                      "meter" = "Depth.rel..m.",
+                                      "d13C" = "d13C_PDB",
+                                      "d18O" = "d18O_PDB",
+                                      "lat" = "Latitude",
+                                      "lng" = "Longitude")
+euro$Biozone <- "TBD"
+euro$Origin <- "Sepulveda"
+#euro <- euro %>% filter(Section != "El-Kef") #don't use El Kef, since we have that already above
+
+# unique(euro$Section) Order of sections in data
+# [1] "El-Kef"           "Ain-Settara"      "Caravaca_outcrop" "Agost"            "Bidart"           "Loya"           
+# [7] "Kulstirenden"     "Hoejerup"  
+euro2 <- data.frame()
+#list of P alpha beginning meterage by section
+P.alpha <- c(1.55, 0.58, 0.2, 0.13, 0.125, 0.125, 0.5, 0.08)
+#add biozones based on Fig 2 from Sepulveda etal 2019
+for (j in seq_along(unique(euro$Section))){
+  subsect <- euro %>% filter(Section == unique(euro$Section)[j])
+  for (i in 1:nrow(subsect)){
+    if(subsect$meter[i] <0){
+    subsect$Biozone[i] <- "P. hantkeninoides"
+    } else if(subsect$meter[i] > 0 & subsect$meter[i] < P.alpha[j]){
+    subsect$Biozone[i] <- "P0"
+    } else {
+    subsect$Biozone[i] <- "P alpha"
+  }
+  }
+  euro2 <- rbind(euro2, subsect)
+}
+
+#now that we have added the biozones we can replace the original data with the new set
+euro <- euro2
+rm(euro2, subsect, euro_S19) #clean up env
+
+ref_dat <- rbind(euro, kef, SMdO)
+```
+
+```{r}
+#Hull et al 2020 Impact Volcanism (d18O only)
+#     Pincelli M. Hull et al. On impact and volcanism across the Cretaceous-Paleogene boundary.Science367,266-272(2020).DOI:10.1126/science.aay5055
+odp_H20_f <- read.csv(paste0(wd, "/Data/Hull_d18O_foram.csv"))[,c(1,2,3,5,9,12,13)]
+odp_H20_f <- odp_H20_f %>% rename( #rename cols to match prev
+  "meter" = "Depth",
+  "Age_KPg" = "Age..Ma..relative.to.KPg.",
+  "Temp" = "Temperature..C."
+)
+odp_H20_b <- read.csv(paste0(wd, "/Data/Hull_d18O_bulk.csv"))[,c(1,2,3,4,8:10)]
+odp_H20_b <- odp_H20_b %>% rename( #rename cols to match prev
+  "meter" = "Depth",
+  "Age_KPg" = "Age..Ma.relative.to.K.Pg.",
+  "Temp" = "Temperature..deg.C."
+)
+
+odp_bind <- rbind(odp_H20_b, odp_H20_f) #bind the two now that the columns match
+rm(odp_H20_b, odp_H20_f) #clean up env
+
+#list original studies (to get d13C data where available, and lat-long)
+unique(odp_bind$Study)
+
+odp_Hull <- odp_H %>% filter(Study == "this study") #separate data from Hull etal 2020
+#this d18O data has matching d13C data published in Alegret etal 2012:
+
+#Alegret et al 2012 - d18O used by Hull et al 2020, here is corr d13C data
+#http://www.pnas.org/lookup/suppl/doi:10.1073/pnas.1110601109/-/DCSupplemental/pnas.1110601109_SI.pdf?targetid=STXT
+#L. Alegret, E. Thomas, & K.C. Lohmann, End-Cretaceous marine mass extinction not caused by productivity collapse, Proc. Natl. Acad. Sci. U.S.A. 109 (3) 728-732, https://doi.org/10.1073/pnas.1110601109 (2012).
+
+odp_Alegret12 <- read.csv(paste0(wd, "/Data/Alegret_etal_2012_C.csv"))
+odp_A12 <- odp_Alegret12
+odp_A12$Section <- odp_A12$Hole #use ODP hole as section identifyer
+odp_A12 <- odp_A12[,c(3,8,9:10,12:14)] #choose relevant cols
+odp_A12$Origin <- "Alegret" #origin of data is Alegret etal 2012
+
+rm(odp_Alegret12)
+
+#Birch et al 2007
+#https://doi.org/10.6084/m9.figshare.c.5459523
+
+library(stringr)
+odp_H$Origin <- stringr::word(odp_H$Study, 1) #name the column for the study it came from
+odp_H <- odp_H[,c(-2)] #get rid of study column
+
+
+odp_H <- na.omit(odp_H) #get rid of empty rows
+
+
+
+
+```
+
+# Biozone - Time Conversion
+```{r}
+#age values from:
+
+#Sprain, C.J., Renne, P.R., Clemens, W.A. and Wilson, G.P., 2018. Calibration of chron C29r: New high-precision geochronologic and paleomagnetic constraints from the Hell Creek region, Montana. Bulletin, 130(9-10), pp.1615-1644.
+#Chron C29r duration 587 ± 53 ka
+#K/Pg at 66.052 ± 0.008/0.043 Ma
+#C29r to C29n 65.724 +- 0.044 Ma
+#C30n to C29r 66.311 +- 0.067 Ma
+
+#P1a-P1c:
+#Bridget S. Wade, Paul N. Pearson, William A. Berggren, Heiko Pälike, Review and revision of Cenozoic tropical planktonic foraminiferal biostratigraphy and calibration to the geomagnetic polarity and astronomical time scale, Earth-Science Reviews, Volume 104, Issues 1–3,2011, Pages 111-142, ISSN 0012-8252, https://doi.org/10.1016/j.earscirev.2010.09.003.
+
+#P0. Guembelitria cretacea Partial-range Zone
+#Definition: Biostratigraphic interval characterized by the partial range of the nominate taxon between the HO of Cretaceous taxa (e.g., Globotruncana, Rugoglobigerina, Globigerinelloides) and the LO of Parvularugoglobigerina eugubina.
+#Magnetochronologic calibration: Chron C29r.
+
+#Zone P-alpha. Parvularugoglobigerina eugubina Taxon-range Zone
+#Definition: Biostratigraphic interval characterized by the total range of the nominate taxon Parvularugoglobigerina eugubina.
+#Magnetochronologic calibration: Chron C29r.
+
+#Subzone P1a. Parasubbotina pseudobulloides Partial-range Subzone
+#Definition: Partial range of the nominate taxon between the HO of Parvularugoglobigerina eugubina and the LO of Subbotina triloculinoides.
+#Magnetic calibration: Chron C29r–Chron C29n.
+
+#Subzone P1b. Subbotina triloculinoides Lowest-occurrence Subzone (herein amended = Subzone P1b [Subbotina triloculinoides Lowest-occurrence Subzone] of Berggren and Pearson, 2005; = Subzone P1b [Subbotina triloculinoides–Globanomalina compressa/Praemurica inconstans Interval Subzone] of BKSA95).
+#Definition: Biostratigraphic interval between the LO of Subbotina triloculinoides and the LO of Globanomalina compressa.
+#Magnetic calibration: Chron C29n–Chron C28n.
+
+
+#new "age" measurement based on biozones
+#P0 defined as K/Pg to 30,000 yrs
+#P-alpha defined as 30,000-300,000 yrs
+#P1a defined as 
+```
+
+##Foraminiferal Diversity
+
+```{r}
+#foram data
+
+#Alegret & Thomas, 2004
+#Alegret, Laia; Thomas, Ellen (2004): Benthic foraminiferal abundances at the Cretaceous/Paleogene boundary of ODP Hole 117-1049C at Blake Nose, Northwest Atlantic (Appendix A) [dataset]. PANGAEA, https://doi.org/10.1594/PANGAEA.695112, Supplement to: Alegret, L; Thomas, E (2004): Benthic foraminifera and environmental turnover across the Cretaceous/Paleogene boundary at Blake Nose (ODP Hole 1049C, Northwestern Atlantic). Palaeogeography, Palaeoclimatology, Palaeoecology, 208(1-2), 59-83, https://doi.org/10.1016/j.palaeo.2004.02.028
+forams_AT <- read.csv(paste0(wd, "/Data/Alegret_Thomas_2004_forams.csv"))
+
+```
+
+# Temporal Alignment
+
+```{r}
+#list in which to put the test data sections
+test_data <- list()
+
+for( i in seq_along(unique(wk_data$Section))){
+  dat <- wk_data %>% filter(Section == unique(wk_data$Section)[i])
+  name <- dat$Section[1]
+  test_data[[name]] <- dat
+}
+rm(dat, name, i)
+
+#alignment data compiled from sources with dated layers
+align_data <- list()
+
+for( i in seq_along(unique(ref_dat$Section))){
+  dat <- ref_dat %>% filter(Section == unique(ref_dat$Section)[i])
+  name <- dat$Section[1]
+  align_data[[name]] <- dat
+}
+rm(dat, name, i)
+
+```
+
+```{r}
+#Hay, C.C., et al., 2019, A library of early Cambrian chemostratigraphic correlations from a reproducible algorithm: Geology, v. 47, p. 457–460, https://doi.org/10.1130/G46019.1
+#Using algorythm to align columns 
+
+#They use a complex version of dynamic time warping. For this project, I use a simplified dtw using the r package 'dtw'
+library(dtw)
+#https://dynamictimewarping.github.io/
+
+alignment <- list()
+
+dtw(x = test_data[[1]], 
+    y = ref_dat[[1]], 
+    dist.method = "Euclidean", 
+    open.end = T, #open-ended 
+    open.begin = T #open-ended
+)
+
+```
+
+```{r}
+#Hay, C.C., et al., 2019, A library of early Cambrian chemostratigraphic correlations from a reproducible algorithm: Geology, v. 47, p. 457–460, https://doi.org/10.1130/G46019.1
+#Using algorythm to align columns 
+
+#They use a complex version of dynamic time warping. For this project, I use a simplified dtw using the r package 'dtw'
+library(dtw)
+#https://dynamictimewarping.github.io/
+
+#step-through from demo(dtw)
+#set up example using my data from the Fault and Sosa Montes de Oca data from TCC
+query <- mydata$d.13C.12C..VPDB[mydata$Section == "TCC-F"]
+template <- SMdO$d13C[SMdO$Section == "TCC"]
+
+dtw(query,template,keep=TRUE)->alignment #make alignment object
+plot(alignment$index1,alignment$index2) #display mapping
+plot(alignment,xts=query,yts=template,type="threeway") #three way plot
+
+## A profile of the cumulative distance matrix
+plot(alignment,type="density")
+
+# Do the same with asymmetric step
+dtw(query,template,keep=TRUE,step=asymmetric)->ita
+plot(ita,type="density",main="TCC Fault and TCC Cumulative, asymmetric step")
+
+ ## Windowing functions (global constraints) can be applied and plotted
+dtwWindow.plot(itakuraWindow, main="So-called Itakura parallelogram window")
+
+## Symmetric step with global parallelogram-shaped constraint
+## Note how long (>2 steps) horizontal stretches are allowed within the window.
+dtw(query,template,keep=TRUE,window=itakuraWindow)->ita;
+dtwPlot(ita,type="density",main="Symmetric step with Itakura parallelogram window")
+
+## Asymmetric step with slope constraint
+## The "Itakura parallelogram" arises from the local constraint
+## plus the boundary condition. Three sides of the parallelogram are seen
+dtw(query,template,keep=TRUE,step=typeIIIc)->ita;
+dtwPlot(ita,type="density",main="Slope-limited asymmetric step (Itakura)");
+
+## Local and global constraint can be in effect at the same time
+## Sakoe-chiba band, plus asymmetric step pattern
+asyband<-dtw(query,template,keep=TRUE,
+              step=asymmetric,
+              window.type=sakoeChibaWindow,
+              window.size=30                  );
+
+dtwPlot(asyband,type="density",main="Sine/cosine: asymmetric step, S-C window")
+
+```
+
+
+
