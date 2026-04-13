@@ -256,12 +256,17 @@ forams_AT <- read.csv(paste0(wd, "/Data/Alegret_Thomas_2004_forams.csv"))
 # Temporal Alignment
 
 ```{r}
+#make sure there are no NAs
+wk_data <- na.omit(wk_data)
+ref_dat <- na.omit(ref_dat)
+
 #list in which to put the test data sections
 test_data <- list()
 
 for( i in seq_along(unique(wk_data$Section))){
   dat <- wk_data %>% filter(Section == unique(wk_data$Section)[i])
   name <- dat$Section[1]
+  dat <- dat %>% arrange(desc(meter)) #arrange in descending meter order
   test_data[[name]] <- dat
 }
 rm(dat, name, i)
@@ -272,9 +277,13 @@ align_data <- list()
 for( i in seq_along(unique(ref_dat$Section))){
   dat <- ref_dat %>% filter(Section == unique(ref_dat$Section)[i])
   name <- dat$Section[1]
+  dat <- dat %>% arrange(desc(meter)) #arrange in descending meter order
   align_data[[name]] <- dat
 }
+
 rm(dat, name, i)
+
+
 
 ```
 
@@ -286,14 +295,42 @@ rm(dat, name, i)
 library(dtw)
 #https://dynamictimewarping.github.io/
 
-alignment <- list()
+alignment <- list() #list in which i will put dtw objects
 
-dtw(x = test_data[[1]], 
-    y = ref_dat[[1]], 
-    dist.method = "Euclidean", 
-    open.end = T, #open-ended 
-    open.begin = T #open-ended
-)
+
+for( i in seq_along (test_data)){ #start out with for loop going through each of my sections
+  og_name <- names(test_data)[i] #section in my data
+  y <- test_data[[i]]$d13C #d13C data that i'm aligning to the dated columns
+  
+  for (j in seq_along(align_data)){ #for loop going through each of the reference sections
+    x <- align_data[[j]]$d13C #d13C that is the reference to which my data is aligned
+    name <- paste0(og_name, "_", names(align_data)[j])
+    
+    wiggle <- dtw(x = x, y = y, #compute alignment using dtw
+                  step.pattern = asymmetric,
+                  open.end = T,
+                  open.begin = T)
+    
+    alignment[[name]] <- wiggle
+    
+  }
+  
+}
+
+```
+
+```{r}
+#integrate the different alignments to find the best one for each section
+names(test_data) #these are the sections I tested
+
+#the dtw object creates indices where x[i] = y[j] so the two columns can be aligned
+
+CP1 <- alignment[1:18]
+plot(CP1[[1]]$index1,CP1[[1]]$index2 )
+
+#i want to use all the alignments to make one mega one
+#so i need a way to combine all my dated columns usefully
+#and then extract index 1 and 2 for each alignmenmt and use those for each section
 
 ```
 
