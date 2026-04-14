@@ -68,17 +68,24 @@ rm(wiggle, og_name, i, j, x, y, name) #clean env
 ```
 
 ```{r}
+library(stringr)
 #integrate the different alignments to find the best one for each section
 names(test_data) #these are the sections I tested
 
 #the dtw object creates indices where x[i] = y[j] so the two columns can be aligned
 
 for(i in seq_along(names(test_data))){
-  name <- names(test_data)[i]
+  name <- names(test_data)[i] #name of section
+  subset <- alignment[grepl(paste0(name), names(alignment))] #subset to just alignments of this section
   
+  for (j in seq_along(names(subset))){
+    col_name <- stringr::word(names(subset)[j], -1, sep = "_") #name the column with the section it is indexed to
+    
+  }
 }
 
-CP1 <- alignment[1:18]
+
+
 plot(CP1[[1]]$index1,CP1[[1]]$index2 )
 
 #i want to use all the alignments to make one mega one
