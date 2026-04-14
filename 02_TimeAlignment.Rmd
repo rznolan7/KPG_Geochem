@@ -32,6 +32,11 @@ rm(me, i) #clean env
 ```{r}
 #if needed, load saved objects
 load(paste0(wd, "/Data/comp_dat.RData"))
+#should load the following:
+#wk_data = data frame of my measured isotope data
+#test_data = list of sections from wk_data
+#ref_dat = data frame of other people's data with biozones
+#align_data = list of sections from ref_dat
 ```
 
 ```{r}
@@ -44,7 +49,7 @@ library(dtw)
 
 alignment <- list() #list in which i will put dtw objects
 
-
+#goal: make dtw objects of each comparison between my data and reference data sections
 for( i in seq_along (test_data)){ #start out with for loop going through each of my sections
   og_name <- names(test_data)[i] #section in my data
   y <- test_data[[i]]$d13C #d13C data that i'm aligning to the dated columns
@@ -58,7 +63,7 @@ for( i in seq_along (test_data)){ #start out with for loop going through each of
                   open.end = T,
                   open.begin = T)
     
-    alignment[[name]] <- wiggle
+    alignment[[name]] <- wiggle #save this dtw object in the list "alignment"
     
   }
   
@@ -67,31 +72,44 @@ for( i in seq_along (test_data)){ #start out with for loop going through each of
 rm(wiggle, og_name, i, j, x, y, name) #clean env
 ```
 
+#Get alignment index from each dtw object
 ```{r}
 library(stringr)
 #integrate the different alignments to find the best one for each section
-names(test_data) #these are the sections I tested
+#names(test_data) #these are the sections I tested
 
 #the dtw object creates indices where x[i] = y[j] so the two columns can be aligned
+indexed_ref <- align_data #data frame for data with indices
+for (i in seq_along(indexed_ref)){
+  indexed_ref[[i]]$ref_index <- seq_along(indexed_ref[[i]]$meter)} #add reference index value
+rm(i)
+#while we are here, do the same for the test_data
+indexed_test <- test_data
+for (i in seq_along(indexed_test)){
+  indexed_test[[i]]$index <- seq_along(indexed_test[[i]]$meter)} #add reference index value
+rm(i)
 
+
+#extract the index1 (reference index) and index2 (my data index) for each dtw object
 for(i in seq_along(names(test_data))){
   name <- names(test_data)[i] #name of section
   subset <- alignment[grepl(paste0(name), names(alignment))] #subset to just alignments of this section
   
   for (j in seq_along(names(subset))){
-    col_name <- stringr::word(names(subset)[j], -1, sep = "_") #name the column with the section it is indexed to
-     #get index values for this column
-      #add to master df
-    
+    #extract other data from indexed_ref, where the order is the same
+    indexed_ref[[j]]$subset_ind <- subset[[j]]$index2 #index values for test data 
+    colnames(indexed_ref[[j]])[ncol(indexed_ref[[j]])] <- name #rename the last col with the section its for
   }
 }
 
+rm(i,j,name,subset)
+```
 
-#i want to use all the alignments to make one mega one
-#so i need a way to combine all my dated columns usefully
-#and then extract index 1 and 2 for each alignmenmt and use those for each section
+## 
+```{r}
 
 ```
+
 
 ```{r}
 #align to accurate ages

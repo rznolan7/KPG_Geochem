@@ -263,6 +263,7 @@ ref_dat <- na.omit(ref_dat)
 #list in which to put the test data sections
 test_data <- list()
 
+#take wk_data and break it up into unique sections in a list called "test_data"
 for( i in seq_along(unique(wk_data$Section))){
   dat <- wk_data %>% filter(Section == unique(wk_data$Section)[i])
   name <- dat$Section[1]
@@ -274,6 +275,7 @@ rm(dat, name, i)
 #alignment data compiled from sources with dated layers
 align_data <- list()
 
+#take ref_dat and break it up into unique sections in a list called align_data
 for( i in seq_along(unique(ref_dat$Section))){
   dat <- ref_dat %>% filter(Section == unique(ref_dat$Section)[i])
   name <- dat$Section[1]
