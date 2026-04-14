@@ -176,7 +176,7 @@ rm(odp_H20_b, odp_H20_f) #clean up env
 #list original studies (to get d13C data where available, and lat-long)
 unique(odp_bind$Study)
 
-odp_Hull <- odp_H %>% filter(Study == "this study") #separate data from Hull etal 2020
+odp_Hull <- odp_bind %>% filter(Study == "this study") #separate data from Hull etal 2020
 #this d18O data has matching d13C data published in Alegret etal 2012:
 
 #Alegret et al 2012 - d18O used by Hull et al 2020, here is corr d13C data
@@ -195,11 +195,11 @@ rm(odp_Alegret12)
 #https://doi.org/10.6084/m9.figshare.c.5459523
 
 library(stringr)
-odp_H$Origin <- stringr::word(odp_H$Study, 1) #name the column for the study it came from
-odp_H <- odp_H[,c(-2)] #get rid of study column
+odp_bind$Origin <- stringr::word(odp_bind$Study, 1) #name the column for the study it came from
+odp_bind <- odp_bind[,c(-2)] #get rid of study column
 
 
-odp_H <- na.omit(odp_H) #get rid of empty rows
+odp_bind <- na.omit(odp_bind) #get rid of empty rows
 
 
 
@@ -253,7 +253,7 @@ forams_AT <- read.csv(paste0(wd, "/Data/Alegret_Thomas_2004_forams.csv"))
 
 ```
 
-# Temporal Alignment
+# Set Up for Temporal Alignment
 
 ```{r}
 #make sure there are no NAs
@@ -281,107 +281,14 @@ for( i in seq_along(unique(ref_dat$Section))){
   align_data[[name]] <- dat
 }
 
+save(test_data, align_data, 
+     file = paste0(wd, "/Data/comp_dat.RData")) #save data objects we will use later
+
 rm(dat, name, i)
 
-
-
 ```
 
-```{r}
-#Hay, C.C., et al., 2019, A library of early Cambrian chemostratigraphic correlations from a reproducible algorithm: Geology, v. 47, p. 457–460, https://doi.org/10.1130/G46019.1
-#Using algorythm to align columns 
 
-#They use a complex version of dynamic time warping. For this project, I use a simplified dtw using the r package 'dtw'
-library(dtw)
-#https://dynamictimewarping.github.io/
-
-alignment <- list() #list in which i will put dtw objects
-
-
-for( i in seq_along (test_data)){ #start out with for loop going through each of my sections
-  og_name <- names(test_data)[i] #section in my data
-  y <- test_data[[i]]$d13C #d13C data that i'm aligning to the dated columns
-  
-  for (j in seq_along(align_data)){ #for loop going through each of the reference sections
-    x <- align_data[[j]]$d13C #d13C that is the reference to which my data is aligned
-    name <- paste0(og_name, "_", names(align_data)[j])
-    
-    wiggle <- dtw(x = x, y = y, #compute alignment using dtw
-                  step.pattern = asymmetric,
-                  open.end = T,
-                  open.begin = T)
-    
-    alignment[[name]] <- wiggle
-    
-  }
-  
-}
-
-```
-
-```{r}
-#integrate the different alignments to find the best one for each section
-names(test_data) #these are the sections I tested
-
-#the dtw object creates indices where x[i] = y[j] so the two columns can be aligned
-
-CP1 <- alignment[1:18]
-plot(CP1[[1]]$index1,CP1[[1]]$index2 )
-
-#i want to use all the alignments to make one mega one
-#so i need a way to combine all my dated columns usefully
-#and then extract index 1 and 2 for each alignmenmt and use those for each section
-
-```
-
-```{r}
-#Hay, C.C., et al., 2019, A library of early Cambrian chemostratigraphic correlations from a reproducible algorithm: Geology, v. 47, p. 457–460, https://doi.org/10.1130/G46019.1
-#Using algorythm to align columns 
-
-#They use a complex version of dynamic time warping. For this project, I use a simplified dtw using the r package 'dtw'
-library(dtw)
-#https://dynamictimewarping.github.io/
-
-#step-through from demo(dtw)
-#set up example using my data from the Fault and Sosa Montes de Oca data from TCC
-query <- mydata$d.13C.12C..VPDB[mydata$Section == "TCC-F"]
-template <- SMdO$d13C[SMdO$Section == "TCC"]
-
-dtw(query,template,keep=TRUE)->alignment #make alignment object
-plot(alignment$index1,alignment$index2) #display mapping
-plot(alignment,xts=query,yts=template,type="threeway") #three way plot
-
-## A profile of the cumulative distance matrix
-plot(alignment,type="density")
-
-# Do the same with asymmetric step
-dtw(query,template,keep=TRUE,step=asymmetric)->ita
-plot(ita,type="density",main="TCC Fault and TCC Cumulative, asymmetric step")
-
- ## Windowing functions (global constraints) can be applied and plotted
-dtwWindow.plot(itakuraWindow, main="So-called Itakura parallelogram window")
-
-## Symmetric step with global parallelogram-shaped constraint
-## Note how long (>2 steps) horizontal stretches are allowed within the window.
-dtw(query,template,keep=TRUE,window=itakuraWindow)->ita;
-dtwPlot(ita,type="density",main="Symmetric step with Itakura parallelogram window")
-
-## Asymmetric step with slope constraint
-## The "Itakura parallelogram" arises from the local constraint
-## plus the boundary condition. Three sides of the parallelogram are seen
-dtw(query,template,keep=TRUE,step=typeIIIc)->ita;
-dtwPlot(ita,type="density",main="Slope-limited asymmetric step (Itakura)");
-
-## Local and global constraint can be in effect at the same time
-## Sakoe-chiba band, plus asymmetric step pattern
-asyband<-dtw(query,template,keep=TRUE,
-              step=asymmetric,
-              window.type=sakoeChibaWindow,
-              window.size=30                  );
-
-dtwPlot(asyband,type="density",main="Sine/cosine: asymmetric step, S-C window")
-
-```
 
 
 
