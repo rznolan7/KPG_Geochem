@@ -80,13 +80,12 @@ for(i in seq_along(names(test_data))){
   
   for (j in seq_along(names(subset))){
     col_name <- stringr::word(names(subset)[j], -1, sep = "_") #name the column with the section it is indexed to
+     #get index values for this column
+      #add to master df
     
   }
 }
 
-
-
-plot(CP1[[1]]$index1,CP1[[1]]$index2 )
 
 #i want to use all the alignments to make one mega one
 #so i need a way to combine all my dated columns usefully
@@ -94,18 +93,15 @@ plot(CP1[[1]]$index1,CP1[[1]]$index2 )
 
 ```
 
+```{r}
+#align to accurate ages
+#extract accurate timings from sections
+#line up my sections using dtw indices
+```
+
 
 ```{r}
-aligned_df <- data.frame(
-  x_meter = test_data[[1]]$meter[alignment$index1],
-  x_d13C  = test_data[[1]]$d13C[alignment$index1],
-  y_meter = align_data[[1]]$meter[alignment$index2],
-  y_d13C  = align_data[[1]]$d13C[alignment$index2]
-)
-
-aligned_df <- data.frame(
-  x = test_data[[1]]$d13C[alignment$index1],
-  y = align_data[[1]]$d13C[alignment$index2]
-)
+save(test_data, align_data, ref_dat, wk_data, alignment, 
+     file = paste0(wd, "/Data/align_dat.RData")) #save data objects we will use later
 ```
 

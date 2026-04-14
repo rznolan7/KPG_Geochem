@@ -1,0 +1,50 @@
+---
+title: "04_BiodiversityMetrics"
+author: "Rhiannon Nolan"
+date: "2026-04-14"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F)
+```
+
+## Load packages
+
+```{R}
+#install necessary packages
+if (!require(rstudioapi)){install.packages("rstudioapi")}
+me <- (rstudioapi::getActiveDocumentContext()$path) #get current file name
+wd <- dirname(me)
+
+if (!require(renv)){ install.packages("renv")}
+
+#because I use an old version of iNEXT
+if(!require(iNEXT)){remotes::install_version("iNEXT", version = "2.0.20")}
+
+packs <- unique(renv::dependencies(me)$Package) #list of packages needed 
+
+for (i in seq_along(packs)){
+  if (!require(packs[i], character.only=T)){ #install any missing pacls
+    install.packages(packs[i])
+  }
+}
+
+lapply(packs, library, character.only=T) #load packages
+
+rm(me, packs, i) #clean env
+
+```
+
+## Import Data
+
+```{r}
+load(paste0(wd, "/Data/align_dat.RData")) #load in data with time alignments
+```
+
+## Plot Biodiversity data
+```{r}
+
+```
+
+
