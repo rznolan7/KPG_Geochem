@@ -30,12 +30,13 @@ rm(me, i) #clean env
 ### This markdown assumes you've run the code in 01_Data_Compilation.Rmd
 
 ```{r}
+#if needed, load saved objects
 load(paste0(wd, "/Data/comp_dat.RData"))
 ```
 
 ```{r}
 #Hay, C.C., et al., 2019, A library of early Cambrian chemostratigraphic correlations from a reproducible algorithm: Geology, v. 47, p. 457–460, https://doi.org/10.1130/G46019.1
-#Using algorythm to align columns 
+#Using algorithm to align columns 
 
 #They use a complex version of dynamic time warping. For this project, I use a simplified dtw using the r package 'dtw'
 library(dtw)
@@ -63,6 +64,7 @@ for( i in seq_along (test_data)){ #start out with for loop going through each of
   
 }
 
+rm(wiggle, og_name, i, j, x, y, name) #clean env
 ```
 
 ```{r}
@@ -70,6 +72,11 @@ for( i in seq_along (test_data)){ #start out with for loop going through each of
 names(test_data) #these are the sections I tested
 
 #the dtw object creates indices where x[i] = y[j] so the two columns can be aligned
+
+for(i in seq_along(names(test_data))){
+  name <- names(test_data)[i]
+  
+}
 
 CP1 <- alignment[1:18]
 plot(CP1[[1]]$index1,CP1[[1]]$index2 )
@@ -80,51 +87,18 @@ plot(CP1[[1]]$index1,CP1[[1]]$index2 )
 
 ```
 
+
 ```{r}
-#Hay, C.C., et al., 2019, A library of early Cambrian chemostratigraphic correlations from a reproducible algorithm: Geology, v. 47, p. 457–460, https://doi.org/10.1130/G46019.1
-#Using algorythm to align columns 
+aligned_df <- data.frame(
+  x_meter = test_data[[1]]$meter[alignment$index1],
+  x_d13C  = test_data[[1]]$d13C[alignment$index1],
+  y_meter = align_data[[1]]$meter[alignment$index2],
+  y_d13C  = align_data[[1]]$d13C[alignment$index2]
+)
 
-#They use a complex version of dynamic time warping. For this project, I use a simplified dtw using the r package 'dtw'
-library(dtw)
-#https://dynamictimewarping.github.io/
-
-#step-through from demo(dtw)
-#set up example using my data from the Fault and Sosa Montes de Oca data from TCC
-query <- mydata$d.13C.12C..VPDB[mydata$Section == "TCC-F"]
-template <- SMdO$d13C[SMdO$Section == "TCC"]
-
-dtw(query,template,keep=TRUE)->alignment #make alignment object
-plot(alignment$index1,alignment$index2) #display mapping
-plot(alignment,xts=query,yts=template,type="threeway") #three way plot
-
-## A profile of the cumulative distance matrix
-plot(alignment,type="density")
-
-# Do the same with asymmetric step
-dtw(query,template,keep=TRUE,step=asymmetric)->ita
-plot(ita,type="density",main="TCC Fault and TCC Cumulative, asymmetric step")
-
- ## Windowing functions (global constraints) can be applied and plotted
-dtwWindow.plot(itakuraWindow, main="So-called Itakura parallelogram window")
-
-## Symmetric step with global parallelogram-shaped constraint
-## Note how long (>2 steps) horizontal stretches are allowed within the window.
-dtw(query,template,keep=TRUE,window=itakuraWindow)->ita;
-dtwPlot(ita,type="density",main="Symmetric step with Itakura parallelogram window")
-
-## Asymmetric step with slope constraint
-## The "Itakura parallelogram" arises from the local constraint
-## plus the boundary condition. Three sides of the parallelogram are seen
-dtw(query,template,keep=TRUE,step=typeIIIc)->ita;
-dtwPlot(ita,type="density",main="Slope-limited asymmetric step (Itakura)");
-
-## Local and global constraint can be in effect at the same time
-## Sakoe-chiba band, plus asymmetric step pattern
-asyband<-dtw(query,template,keep=TRUE,
-              step=asymmetric,
-              window.type=sakoeChibaWindow,
-              window.size=30                  );
-
-dtwPlot(asyband,type="density",main="Sine/cosine: asymmetric step, S-C window")
-
+aligned_df <- data.frame(
+  x = test_data[[1]]$d13C[alignment$index1],
+  y = align_data[[1]]$d13C[alignment$index2]
+)
 ```
+

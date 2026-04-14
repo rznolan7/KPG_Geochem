@@ -281,7 +281,7 @@ for( i in seq_along(unique(ref_dat$Section))){
   align_data[[name]] <- dat
 }
 
-save(test_data, align_data, 
+save(test_data, align_data, ref_dat, wk_data,
      file = paste0(wd, "/Data/comp_dat.RData")) #save data objects we will use later
 
 rm(dat, name, i)
