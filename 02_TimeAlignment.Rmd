@@ -162,6 +162,16 @@ rm(i, j, name, name2, sect, ref_bioz, test_ind, bioz_C, bioz_subset, bioz_O)
 ```
 
 ```{r}
+#extract just alignment with TCC from Sosa Montes de Oca
+TCC_align <- bioz_added[grepl("_TCC", names(bioz_added))] #get just runs aligned with TCC
+PG_TCC <- rbind(TCC_align[[3]], TCC_align[[4]]) #separate sampled sections from Prefault and Fault at TCC
+PG_TCC <- PG_TCC[,c(1:7,9)]
+PG_TCC <- PG_TCC %>% rename( "Biozone" = colnames(PG_TCC)[ncol(PG_TCC)])
+rm(TCC_align)
+```
+
+
+```{r}
 #define mode function
 get_mode <- function(x) {
   ux <- unique(x)
@@ -277,12 +287,17 @@ for(i in seq_along(names(indexed_test))){
   }
   age_assigned <- rbind(age_assigned, df_section)
 }
+
+rm(age, age_added, age_subset, section_data, df_section, colnum, i, j, name, sect, ref_age, test_ind, name2, subset)
+```
+
+```{r}
+rm(alignment_d13C, alignment_d18O, alignment_d18O_Hull, indexed_d18O, indexed_ref, indexed_test, bioz_added)
 ```
 
 
-
 ```{r}
-save(biozone_assigned,
+save(biozone_assigned, age_assigned, PG_TCC,
      file = paste0(wd, "/Data/align_dat.RData")) #save data objects we will use later
 ```
 

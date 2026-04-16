@@ -37,7 +37,9 @@ rm(me, packs, i) #clean env
 ## Import Data
 
 ```{r}
+load(paste0(wd, "/Data/comp_dat.RData")) #load in working data
 load(paste0(wd, "/Data/align_dat.RData")) #load in data with time alignments
+load(paste0(wd, "/Data/d18O_ref.RData")) #d18O reference sets
 
 ```
 
@@ -55,11 +57,13 @@ for (i in seq_along(sections)){
   sect_data[[name]] <- dat
 }
 
+
+
 rm(i, dat, name)
 ```
 
 ```{r}
-#plot each section and compile them all into a figure
+#plot each section 
 library(ggplot2)
 plots <- list()
 
@@ -86,8 +90,8 @@ for (i in seq_along(sect_data)){
 ```{r}
 #d13C plots
 dat <- wk_data
-d13C <- dat$d.13C.12C..VPDB
-d18O <- dat$d.18O.16O..VPDB
+d13C <- dat$d13C
+d18O <- dat$d18O
 meter <- dat$meter
 
 p_d13C <- ggplot(data = dat, aes(x = meter, y = d13C)) +
@@ -265,5 +269,27 @@ p_CO <- ggplot(data = wk_data) +
     facet_grid(. ~ Section)  #break up into section plots
 
 plot(p_CO)
+```
+
+#Plots with biozone markers
+```{r}
+library(patchwork)
+#separate plot of biozones
+biozones_TCC <- data.frame(c(unique(PG_TCC$Biozone)))
+biozones_TCC <- biozones_TCC %>% rename("Biozone" = colnames(biozones_TCC[1]))
+biozones_TCC$min <- 
+
+
+bioz <- ggplot(PG_TCC) +  
+  geom_rect(aes(
+    xmin = 0, xmax = 1,
+    ymin = min(meter), ymax = max(meter),
+    fill = Biozone
+  )) +
+  scale_y_reverse() +
+  theme_void() +
+  theme(legend.position = "none")
+
+p2 + p1 + plot_layout(widths = c(1, 4))
 ```
 
