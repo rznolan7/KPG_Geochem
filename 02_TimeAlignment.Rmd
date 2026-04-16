@@ -32,11 +32,15 @@ rm(me, i) #clean env
 ```{r}
 #if needed, load saved objects
 load(paste0(wd, "/Data/comp_dat.RData"))
+load(paste0(wd, "/Data/d18O_ref.RData"))
+
 #should load the following:
 #wk_data = data frame of my measured isotope data
 #test_data = list of sections from wk_data
 #ref_dat = data frame of other people's data with biozones
 #align_data = list of sections from ref_dat
+
+##optional - d18O_ref loads d18O_ref
 ```
 
 ```{r}
@@ -51,6 +55,10 @@ alignment_d13C <- list() #list in which i will put dtw objects
 alignment_d18O <- list() #list in which i will put dtw objects
 
 #goal: make dtw objects of each comparison between my data and reference data sections
+#=========================================================================================================
+#implement segmented dtws - run separately for before and after KPg because the KPg is a known tie point
+#=========================================================================================================
+
 for( i in seq_along (test_data)){ #start out with for loop going through each of my sections
   og_name <- names(test_data)[i] #section in my data
   x <- test_data[[i]]$d13C #d13C data that i'm aligning to the dated columns
@@ -123,6 +131,7 @@ rm(i,j,name,subset_C, subset_O)
 
 ## 
 ```{r}
+library(dplyr)
 #go through indexed test data and for each section add the Biozone from the corresponding index of each reference dataset
 bioz_added <- list()
 
@@ -169,9 +178,8 @@ for(i in seq_along(names(indexed_test))){
   df_section <- df_section[1:(ncol(df_section)-2)] #shave off biozone info from first df
   
   for (j in seq_along(names(section_data))){
-    colnum <- ncol(section_data[[i]]) #index of last col
+    colnum <- ncol(section_data[[j]]) #index of last col
     df_section <- cbind(df_section, section_data[[j]][,c(colnum-1, colnum)]) #bind on last two columns
-    j<- j+1
   }
   
   #now go through and find the mode of the biozone assignments
@@ -184,6 +192,93 @@ for(i in seq_along(names(indexed_test))){
 
 rm(colnum, colnum2, i, j, name, df_section, df_section_total, section_data)
 ```
+
+```{r}
+#align using just d18O from CHull dataset - already has ages
+library(dtw)
+library(dplyr)
+#https://dynamictimewarping.github.io/
+alignment_d18O_Hull <- list() #list in which i will put dtw objects
+#goal: make dtw objects of each comparison between my data and reference data sections
+for( i in seq_along (test_data)){ #start out with for loop going through each of my sections
+  og_name <- names(test_data)[i] #section in my data
+  x <- test_data[[i]]$d18O #d18O data that i'm aligning to the dated columns
+  
+  for (j in seq_along(d18O_ref)){ #for loop going through each of the reference sections
+    y <- d18O_ref[[j]]$d18O #d18O that is the reference to which my data is aligned
+    name <- paste0(og_name, "_", names(d18O_ref)[j])
+    wiggle <- dtw(x = x, y = y, #compute alignment for d13C
+                  step.pattern = asymmetric,
+                  open.end = T,
+                  open.begin = T)
+    alignment_d18O_Hull[[name]] <- wiggle #save this dtw object in the list "alignment"
+  }
+}
+rm(wiggle, og_name, i, j, x, y, name) #clean env
+
+#the dtw object creates indices where x[i] = y[j] so the two columns can be aligned - add index column
+indexed_d18O <- d18O_ref #data frame for data with indices
+for (i in seq_along(indexed_d18O)){
+  indexed_d18O[[i]]$ref_index <- seq_along(indexed_d18O[[i]]$Age_KPg)} #add reference index value
+
+#while we are here, do the same for the test_data
+indexed_test <- test_data
+for (i in seq_along(indexed_test)){
+  indexed_test[[i]]$index <- seq_along(indexed_test[[i]]$meter)} #add reference index value
+
+#extract the index1 (reference index) and index2 (my data index) for each dtw object
+for(i in seq_along(names(indexed_test))){
+  name <- names(indexed_test)[i] #name of section
+  subset <- alignment_d18O_Hull[grepl(paste0(name), names(alignment_d18O_Hull))] #subset to just alignments of this section
+  
+  for (j in seq_along(names(subset))){
+    #extract other data from indexed_test, where the order is the same
+    sect <- names(subset)[[j]]
+    indexed_test[[i]]$subset <- subset[[j]]$index2 #index values for test data 
+    colnames(indexed_test[[i]])[ncol(indexed_test[[i]])] <- paste0(sect) #rename the last col with the section its for
+  }
+}
+
+#go through indexed test data and for each section add the Biozone from the corresponding index of each reference dataset
+age_added <- list()
+
+for( i in seq_along(indexed_test)){ #for each test section
+  name <- names(indexed_test)[i]
+  for(j in seq_along(names(indexed_d18O))){ #for each of the reference sections
+    sect <- names(indexed_d18O)[j] #name of reference section
+    ref_age <- indexed_d18O[[j]] %>% select(c(Age_KPg, ref_index)) #just extract index and biozone from ref 
+
+    test_ind <- indexed_test[[i]] %>% select (c(meter,index))
+    test_ind <- cbind(test_ind, indexed_test[[i]][,grepl(sect, colnames(indexed_test[[i]]))]) #df with index & matching indices
+    
+    colnames(ref_age)[2] <- colnames(test_ind)[3] #match index name for d13C data
+    age <- left_join(test_ind, ref_age, by = colnames(ref_age)[2]) #join the two so the biozones from ref map onto test data
+    
+    age_subset <- data.frame(indexed_test[[i]][,1:7,9], age[,4])
+    colnames(age_subset)[ncol(age_subset)-1] <- paste0(sect, "-Age")
+    
+    name2 <- paste0(name, "_", sect)
+    age_added[[name2]] <- age_subset
+  }
+}
+
+#extract age data - just extract all 3 for now
+age_assigned <- data.frame()
+  #extract the age info now in bioz_added
+for(i in seq_along(names(indexed_test))){
+  name <- names(indexed_test)[i] #name of section
+  section_data <- age_added[grepl(paste0(name), names(age_added))] #subset to just this section
+  df_section <- section_data[[1]] #start data frame
+  df_section <- df_section[1:(ncol(df_section)-1)] #shave off age info from first df
+  
+  for (j in seq_along(names(section_data))){
+    colnum <- ncol(section_data[[j]]) #index of last col
+    df_section <- cbind(df_section, section_data[[j]][,c(colnum)]) #bind on last two columns
+  }
+  age_assigned <- rbind(age_assigned, df_section)
+}
+```
+
 
 
 ```{r}

@@ -171,7 +171,7 @@ odp_H20_b <- odp_H20_b %>% rename( #rename cols to match prev
 )
 
 odp_bind <- rbind(odp_H20_b, odp_H20_f) #bind the two now that the columns match
-rm(odp_H20_b, odp_H20_f) #clean up env
+#rm(odp_H20_b, odp_H20_f) #clean up env
 
 #list original studies (to get d13C data where available, and lat-long)
 unique(odp_bind$Study)
@@ -267,7 +267,7 @@ test_data <- list()
 for( i in seq_along(unique(wk_data$Section))){
   dat <- wk_data %>% filter(Section == unique(wk_data$Section)[i])
   name <- dat$Section[1]
-  dat <- dat %>% arrange(desc(meter)) #arrange in descending meter order
+  dat <- dat %>% arrange(desc(meter)) #arrange in descending meter order - important for dtw
   test_data[[name]] <- dat
 }
 rm(dat, name, i)
@@ -282,6 +282,20 @@ for( i in seq_along(unique(ref_dat$Section))){
   dat <- dat %>% arrange(desc(meter)) #arrange in descending meter order
   align_data[[name]] <- dat
 }
+
+#separate ref data for Hull bulk data w/o d13C
+d18O_ref <- list()
+odp_H20_b <- na.omit(odp_H20_b)
+
+for( i in seq_along(unique(odp_H20_b$Site))){
+  dat <- odp_H20_b %>% filter(Site == unique(odp_H20_b$Site)[i])
+  name <- dat$Site[1]
+  dat <- dat %>% arrange(desc(Age_KPg)) #arrange in descending age order - important for dtw
+  d18O_ref[[name]] <- dat
+}
+
+#save objects for use in next file
+save(d18O_ref, file = paste0(wd, "/Data/d18O_ref.RData"))
 
 save(test_data, align_data, ref_dat, wk_data,
      file = paste0(wd, "/Data/comp_dat.RData")) #save data objects we will use later
