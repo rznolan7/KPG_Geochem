@@ -169,7 +169,7 @@ library(isogeochem)
 #eq = "ONeil69"
 
 #add column to data with VSMOW d18O (from VPDB)
-wk_data$d18O_VSMOW <- to_VSMOW(wk_data$d.18O.16O..VPDB)
+wk_data$d18O_VSMOW <- to_VSMOW(wk_data$d18O)
 H2O_VSMOW <- to_VSMOW(0)
 
 #add column calculating temps (deg C)
@@ -206,7 +206,7 @@ p_Temp_0 <- ggplot(data = wk_data, aes(x = meter, y = Temp_0)) +
 plot(p_Temp_0)
 
 
-setwd(paste0(wd, "/Figs"))
+setwd(paste0(wd, "/Figures"))
 ggsave("p_Temp_0.png", width = 10, height = 6)
 setwd(wd)
 
@@ -239,7 +239,7 @@ p_Temp_min1 <- ggplot(data = wk_data, aes(x = meter, y = Temp_min1)) +
 plot(p_Temp_min1)
 
 
-setwd(paste0(wd, "/Figs"))
+setwd(paste0(wd, "/Figures"))
 ggsave("p_Temp_min1.png", width = 10, height = 6)
 setwd(wd)
 ```
@@ -248,12 +248,12 @@ setwd(wd)
 p_CO <- ggplot(data = wk_data) +
     theme_bw() +
   #plot d13C
-    geom_point(aes(x = meter, y = d13C), color = "#4b8c3c", shape = 2) + #add point data
-    #geom_smooth(aes(x = meter, y = d13C), color = "#17400d", fill = "#aecca7") + #add smoothed loess fit
+    geom_point(aes(x = meter, y = d13C), color = "#6e1a37", shape = 2) + #add point data
+    geom_smooth(aes(x = meter, y = d13C), color = "#6e1a37", fill = "#d75656") + #add smoothed loess fit
   
   #plot d18O
-    geom_point(aes(x = meter, y = d18O), color = "#346aa3", shape = 2) + #add point data
-    #geom_smooth(aes(x = meter, y = d18O), color = "#103a66", fill = "#b1c7de") + #add smoothed loess fit
+    geom_point(aes(x = meter, y = d18O), color = "#021a54", shape = 2) + #add point data
+    geom_smooth(aes(x = meter, y = d18O), color = "#021a54", fill = "#b1c7de") + #add smoothed loess fit
   
     coord_flip() + #flip x and y so that meter is vertical
 
@@ -269,10 +269,13 @@ p_CO <- ggplot(data = wk_data) +
     facet_grid(. ~ Section)  #break up into section plots
 
 plot(p_CO)
+setwd(paste0(wd, "/Figures"))
+ggsave("p_CO.png", width = 10, height = 6)
+setwd(wd)
 ```
 
 #Plots with biozone markers
-```{r}
+```{r, eval=FALSE}
 library(patchwork)
 #separate plot of biozones
 biozones_TCC <- data.frame(c(unique(PG_TCC$Biozone)))
@@ -291,5 +294,52 @@ bioz <- ggplot(PG_TCC) +
   theme(legend.position = "none")
 
 p2 + p1 + plot_layout(widths = c(1, 4))
+```
+
+
+## By Distance
+```{r, fig.width=15}
+data <- all_sect #using all data to show differences by distance
+library(terra)
+
+crater <- rbind(c(-89.5, 21.4))
+data <- data %>% mutate(
+  Distance = signif((terra::distance(x = as.matrix(data[,c(6,5)]), y = crater,
+                             lonlat = TRUE))/1000, 
+                   digits = 1)
+)
+data <- data %>% mutate(
+  Distance_f = paste0(as.character(Distance), " km")
+)
+#data$Distance_f = factor(data$Distance, levels=c())
+
+
+p_dist <- ggplot(data = data) +
+    theme_bw() +
+  #plot d13C
+    geom_point(aes(x = meter, y = d13C), color = "#6e1a37", shape = 2) + #add point data
+    #geom_smooth(aes(x = meter, y = d13C), color = "#6e1a37", fill = "#d75656") + #add smoothed loess fit
+  
+  #plot d18O
+    geom_point(aes(x = meter, y = d18O), color = "#021a54", shape = 2) + #add point data
+    #geom_smooth(aes(x = meter, y = d18O), color = "#021a54", fill = "#b1c7de") + #add smoothed loess fit
+  
+    coord_flip() + #flip x and y so that meter is vertical
+
+    geom_hline(aes(yintercept = 0)) + #add vertical line at d13C = 0
+  
+    geom_vline(aes(xintercept = 0), color = "#994b6b") + #add horizontal line at K-Pg boundary
+  
+    labs(y = "per mil", 
+         x = "meter", 
+         title = "d13C and d18O By Distance from Impact Site",
+         caption = "K-Pg Boundary at 0 m") + #add axis labels
+  
+    facet_grid(. ~ Distance_f)  #break up into section plots
+
+plot(p_dist)
+setwd(paste0(wd, "/Figures"))
+ggsave("p_dist.png", width = 15, height = 6)
+setwd(wd)
 ```
 

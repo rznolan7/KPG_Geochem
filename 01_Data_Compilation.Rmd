@@ -92,6 +92,7 @@ rm(tcc_SMdO24)
 
 ```{r}
 #Other Data
+library(dplyr)
 
 #Jones etal 2023 - El Kef
 elkef_J23 <- read.csv(paste0(wd, "/Data/Jones_etal_2023_ElKef.csv"))
@@ -101,6 +102,9 @@ kef <- kef %>% rename("meter" = "Composite.core.depth..mcd.")
 kef$Origin <- "Jones"
 kef$lat <- 36.2
 kef$lng <- 8.6
+kef<- kef %>% mutate(
+  meter = (meter - 61.42) #set so KPg is at 0
+)
 
 rm(elkef_J23)
 
@@ -151,7 +155,27 @@ for (j in seq_along(unique(euro$Section))){
 euro <- euro2
 rm(euro2, subsect, euro_S19) #clean up env
 
-ref_dat <- rbind(euro, kef, SMdO)
+#Rachel Grandpre, Andrew Schauer, Kyle Samek, Anne Veeger, Peter Ward, David Fastovsky,
+#Testing the terrestrial δ13C Cretaceous–Paleogene (K–Pg) chemostratigraphic marker,
+#Palaeogeography, Palaeoclimatology, Palaeoecology, Volumes 381–382, 2013, Pages 67-75, ISSN 0031-0182,
+#https://doi.org/10.1016/j.palaeo.2013.04.015.
+Grandpre_13 <- read.csv(paste0(wd, "/Data/Grandpre_etal_2013.csv"))
+Grandpre_13$lat <- 46.25
+Grandpre_13$lng <- -103.9
+ND <- Grandpre_13[,c(1,7,10:11)]
+
+ND <- ND %>% mutate(
+  meter = Grandpre_13$Sample/100, #measured in cm relative to K/Pg
+  Section = "Mud Buttes",
+  d18O = 0,
+  Origin = "Grandpre",
+  Biozone = "TBD"
+)
+ND <- ND[,c(2:9)] %>% rename(d13C = d13C_VPDB)
+
+
+
+ref_dat <- rbind(euro, kef, SMdO, ND)
 ```
 
 ```{r}
@@ -304,6 +328,9 @@ rm(dat, name, i)
 
 ```
 
+```{r}
+#run all
+```
 
 
 
