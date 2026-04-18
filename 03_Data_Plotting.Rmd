@@ -243,6 +243,128 @@ setwd(paste0(wd, "/Figures"))
 ggsave("p_Temp_min1.png", width = 10, height = 6)
 setwd(wd)
 ```
+
+```{r}
+#Temp by meter and aligned to SMdO
+
+#plot Temp given water d18O value = 0 (VSMOW)
+library(ggplot2)
+p_Temp_meter <- ggplot(data = wk_data, aes(x = meter, y = Temp_min1)) +
+    theme_bw() +
+    geom_point(color = "#8d58b8", shape = 2) + #add point data
+    ylim((min(wk_data$Temp_min1)-0.01), (max(wk_data$Temp_min1)+0.01)) + #set axis limits to just larger than data values
+  
+    coord_flip() + #flip x and y so that meter is vertical
+    #scale_x_reverse() +
+  
+    geom_smooth(color = "#463c82", fill = "#c1bae8") + #add smoothed loess fit
+  
+
+  
+    geom_hline(aes(yintercept = 0)) + #add vertical line at d13C = 0
+  
+    geom_vline(aes(xintercept = 0), color = "#994b6b") + #add horizontal line at K-Pg boundary
+  
+    labs(y = "Temperature (deg C)", 
+         x = "meter", 
+         title = "Temperature Plots (meter)",
+         caption = "K-Pg Boundary at 0 m; Assumed seawater d18O = -1 (VSMOW)") + #add axis labels
+  
+    facet_grid(. ~ Section)  #break up into section plots
+    
+plot(p_Temp_meter)
+
+
+setwd(paste0(wd, "/Figures"))
+ggsave("p_Temp_bymeter.png", width = 8, height = 6)
+setwd(wd)
+
+#plot Temperature aligned to age rather than meter
+mydata <- all_sect %>% filter(
+  Section %in% c(unique(wk_data$Section))
+)
+#add column to data with VSMOW d18O (from VPDB)
+mydata$d18O_VSMOW <- to_VSMOW(mydata$d18O)
+H2O_VSMOW <- to_VSMOW(0)
+#add column calculating temps (deg C)
+mydata$Temp_min1 <- temp_d18O(mydata$d18O_VSMOW, -1, "calcite", "ONeil69")
+
+```
+
+```{r}
+library(ggplot2)
+p_Temp_age <- ggplot(data = mydata, aes(x = Age, y = Temp_min1)) +
+    theme_bw() +
+    geom_point(color = "#8d58b8", shape = 2) + #add point data
+    ylim((min(wk_data$Temp_min1)-0.01), (max(wk_data$Temp_min1)+0.01)) + #set axis limits to just larger than data values
+  
+    coord_flip() + #flip x and y so that meter is vertical
+    scale_x_reverse() +
+  
+    geom_smooth(color = "#463c82", fill = "#c1bae8") + #add smoothed loess fit
+  
+
+  
+    geom_hline(aes(yintercept = 0)) + #add vertical line at d13C = 0
+  
+    geom_vline(aes(xintercept = 66.052), color = "#994b6b") + #add horizontal line at K-Pg boundary
+  
+    labs(y = "Temperature (deg C)", 
+         x = "Age", 
+         title = "Temperature Plots (Absolute Age)",
+         caption = "K-Pg Boundary at 0 m, Seawater assumed d18O = -1 per mil") + #add axis labels
+  
+    facet_grid(. ~ Section)  #break up into section plots
+    
+    
+
+plot(p_Temp_age)
+
+
+setwd(paste0(wd, "/Figures"))
+ggsave("p_Temp_AlignedSMdO.png", width = 8, height = 6)
+setwd(wd)
+```
+
+```{r}
+#d13C plottted with age
+thisdata <- mydata %>% filter(
+    Age <= 66.052
+)
+library(ggplot2)
+p_C_age <- ggplot(data = thisdata, aes(x = Age, y = d13C)) +
+    theme_bw() +
+    geom_point(color = "#4b8c3c", shape = 2) + #add point data
+    ylim((min(thisdata$d13C)-0.01), (max(thisdata$d13C)+0.01)) + #set axis limits to just larger than data values
+  
+    coord_flip() + #flip x and y so that meter is vertical
+    scale_x_reverse() +
+  
+    geom_smooth(color = "#17400d", fill = "#aecca7") + #add smoothed loess fit
+  
+
+  
+    geom_hline(aes(yintercept = 0)) + #add vertical line at d13C = 0
+  
+    geom_vline(aes(xintercept = 66.052), color = "#994b6b") + #add horizontal line at K-Pg boundary
+  
+    labs(y = "Bulk d13C (per mil)", 
+         x = "Age", 
+         title = "Bulk Sample d13C Plots (Absolute Age)",
+         caption = "K-Pg Boundary at 66.052 Ma") + #add axis labels
+  
+    facet_grid(. ~ Section)  #break up into section plots
+    
+    
+
+plot(p_C_age)
+
+
+setwd(paste0(wd, "/Figures"))
+ggsave("p_d13C_age.png", width = 8, height = 6)
+setwd(wd)
+```
+
 ```{r}
 #plot d13C and d18O together
 p_CO <- ggplot(data = wk_data) +
@@ -298,9 +420,10 @@ p2 + p1 + plot_layout(widths = c(1, 4))
 
 
 ## By Distance
-```{r, fig.width=15}
+```{r, fig.width=8}
 data <- all_sect #using all data to show differences by distance
 library(terra)
+library(dplyr)
 
 crater <- rbind(c(-89.5, 21.4))
 data <- data %>% mutate(
@@ -317,29 +440,31 @@ data <- data %>% mutate(
 p_dist <- ggplot(data = data) +
     theme_bw() +
   #plot d13C
-    geom_point(aes(x = meter, y = d13C), color = "#6e1a37", shape = 2) + #add point data
+    geom_point(aes(x = Age, y = d13C), color = "#6e1a37", shape = 2) + #add point data
     #geom_smooth(aes(x = meter, y = d13C), color = "#6e1a37", fill = "#d75656") + #add smoothed loess fit
   
   #plot d18O
-    geom_point(aes(x = meter, y = d18O), color = "#021a54", shape = 2) + #add point data
+    #geom_point(aes(x = Age, y = d18O), color = "#021a54", shape = 2) + #add point data
     #geom_smooth(aes(x = meter, y = d18O), color = "#021a54", fill = "#b1c7de") + #add smoothed loess fit
   
     coord_flip() + #flip x and y so that meter is vertical
+  
+    scale_x_reverse(limits = c(67, 65)) +
 
     geom_hline(aes(yintercept = 0)) + #add vertical line at d13C = 0
   
-    geom_vline(aes(xintercept = 0), color = "#994b6b") + #add horizontal line at K-Pg boundary
+    geom_vline(aes(xintercept = 66.052), color = "#994b6b") + #add horizontal line at K-Pg boundary
   
     labs(y = "per mil", 
-         x = "meter", 
-         title = "d13C and d18O By Distance from Impact Site",
-         caption = "K-Pg Boundary at 0 m") + #add axis labels
+         x = "Age (Ma)", 
+         title = "d13C By Distance from Impact Site",
+         caption = "K-Pg Boundary at 66.052 Ma") + #add axis labels
   
     facet_grid(. ~ Distance_f)  #break up into section plots
 
 plot(p_dist)
 setwd(paste0(wd, "/Figures"))
-ggsave("p_dist.png", width = 15, height = 6)
+ggsave("p_dist.png", width = 8, height = 5.5)
 setwd(wd)
 ```
 

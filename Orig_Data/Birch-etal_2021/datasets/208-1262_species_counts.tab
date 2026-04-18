@@ -1,0 +1,136 @@
+/* DATA DESCRIPTION:
+Citation:	Birch, Heather; Schmidt, Daniela N; Coxall, Helen; Kroon, Dick; Ridgwell, Andy (2021): Species counts of planktic foraminifera (<106µm) from ODP Site 208-1262 [dataset]. PANGAEA, https://doi.org/10.1594/PANGAEA.935500, 
+	In: Birch, H et al. (2021): Raw Data for article Ecosystem Function after the K/Pg Extinction: Decoupling of Marine Carbon Pump and Diversity [dataset bundled publication]. PANGAEA, https://doi.org/10.1594/PANGAEA.935502
+Abstract:	Core samples were washed over a 38µm sieve and dried in an oven at 40°C. Planktic foraminifera species and genera abundance counts were made on 49 samples.
+Keyword(s):	Biological pump; ecology; ecosystem function; K/Pg; Planktonic foraminifera
+Related to:	Birch, Heather; Schmidt, Daniela N; Coxall, Helen K; Kroon, Dick; Ridgwell, Andy (2021): Ecosystem function after the K/Pg extinction: decoupling of marine carbon pump and diversity. Proceedings of the Royal Society B-Biological Sciences, 288(1953), 20210863, https://doi.org/10.1098/rspb.2021.0863
+Coverage:	MEDIAN LATITUDE: -27.185740 * MEDIAN LONGITUDE: 1.576990 * SOUTH-BOUND LATITUDE: -27.185830 * WEST-BOUND LONGITUDE: 1.576980 * NORTH-BOUND LATITUDE: -27.185650 * EAST-BOUND LONGITUDE: 1.577000
+	DATE/TIME START: 2003-03-26T12:40:00 * DATE/TIME END: 2003-03-29T05:15:00
+	MINIMUM ELEVATION: -4753.6 m * MAXIMUM ELEVATION: -4753.6 m
+Event(s):	208-1262B * LATITUDE: -27.185830 * LONGITUDE: 1.577000 * DATE/TIME START: 2003-03-26T12:40:00 * DATE/TIME END: 2003-03-27T21:25:00 * ELEVATION: -4753.6 m * Penetration: 209.9 m * Recovery: 212.53 m * LOCATION: Walvis Ridge, Southeast Atlantic Ocean * CAMPAIGN: Leg208 (URI: https://doi.org/10.2973/odp.proc.ir.208.2004) * BASIS: Joides Resolution (URI: https://www-odp.tamu.edu:443/resolutn.html) * METHOD/DEVICE: Drilling/drill rig (DRILL) * COMMENT: 23 cores; 209.9 m cored; 0 m drilled; 101.3 % recovery
+	208-1262C * LATITUDE: -27.185650 * LONGITUDE: 1.576980 * DATE/TIME START: 2003-03-27T21:25:00 * DATE/TIME END: 2003-03-29T05:15:00 * ELEVATION: -4753.6 m * Penetration: 212.5 m * Recovery: 125.93 m * LOCATION: Walvis Ridge, Southeast Atlantic Ocean * CAMPAIGN: Leg208 (URI: https://doi.org/10.2973/odp.proc.ir.208.2004) * BASIS: Joides Resolution (URI: https://www-odp.tamu.edu:443/resolutn.html) * METHOD/DEVICE: Drilling/drill rig (DRILL) * COMMENT: 14 cores; 122.5 m cored; 90 m drilled; 102.8 % recovery
+Parameter(s):	Event label (Event) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk)
+	Sample code/label (Sample label) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: DSDP/ODP/IODP sample designation (URI: hdl:10013/epic.27914.d001)
+	Depth, composite [mcd] (Depth comp) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk)
+	Planktic foraminifera zone (Plank foram zone) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk)
+	Age model [ka] (Age model) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Determinded after Dinarès-Turell et al. (2014) (URI: https://doi.org/10.1016/j.epsl.2014.08.027) * COMMENT: La2011
+	Eoglobigerina edita [#] (E. edita) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Eoglobigerina eobulloides [#] (E. eobulloides) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Eoglobigerina spiralis [#] (E. spiralis) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Globanomalina archeocompressa [#] (G. archeocompressa) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Globanomalina chapmani [#] (G. chapmani) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Globanomalina compressa [#] (G. compressa) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Globanomalina ehrenbergi [#] (G. ehrenbergi) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Globanomalina imitata [#] (G. imitata) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Globanomalina planocompressa [#] (G. planocompressa) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Hedbergella holmdelensis [#] (H. holmdelensis) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Hedbergella monmouthensis [#] (H. monmouthensis) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Igorina albeari [#] (I. albeari) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Igorina pusilla [#] (I. pusilla) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Morozovella acutispira [#] (M. acutispira) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Morozovella angulata [#] (M. angulata) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Morozovella apanthesma [#] (M. apanthesma) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Morozovella conicotruncata [#] (M. conicotruncata) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Morozovella occlusa [#] (M. occlusa) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Morozovella pasionensis [#] (M. pasionensis) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Morozovella praeangulata [#] (M. praeangulata) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Morozovella velascoensis [#] (M. velascoensis) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Praemurica inconstans [#] (P. inconstans) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Praemurica pseudoinconstans [#] (P. pseudoinconstans) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Praemurica taurica [#] (P. taurica) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Praemurica uncinata [#] (P. uncinata) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Globanomalina archeocompressa [#] (G. archeocompressa) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Parasubbotina pseudobulloides [#] (P. pseudobulloides) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Parasubbotina varianta [#] (P. varianta) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Parasubbotina variospira [#] (P. variospira) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Subbotina cancellata [#] (S. cancellata) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Subbotina triangularis [#] (S. triangularis) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Subbotina triloculinoides [#] (S. triloculinoides) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Subbotina trivialis [#] (S. trivialis) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Globoconusa daubjergensis [#] (G. daubjergensis) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Guembelitria cretacea [#] (G. cretacea) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Chiloguembelina midwayensis [#] (C. midwayensis) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Chiloguembelina morsei [#] (C. morsei) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Parvularugoglobigerina alabamensis [#] (P. alabamensis) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Parvularugoglobigerina eugubina [#] (P. eugubina) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Rectoguembelina cretacea [#] (R. cretacea) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Woodringina claytonensis [#] (W. claytonensis) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Woodringina hornerstownensis [#] (W. hornerstownensis) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Zeauvigerina waiparaensis [#] (Z. waiparaensis) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Abathomphalus mayaroensis [#] (A. mayaroensis) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Globotruncanella citae [#] (G. citae) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Globigerinelloides subcarinatus [#] (G. subcarinatus) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Globotruncana aegyptiaca [#] (G. aegyptiaca) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Globotruncana arca [#] (G. arca) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Globotruncana falsostuarti [#] (G. falsostuarti) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Globotruncanella havanensis [#] (G. havanensis) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Globotruncanella petaloidea [#] (G. petaloidea) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Globotruncanita conica [#] (G. conica) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Globotruncanita stuarti [#] (G. stuarti) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Heterohelix navarroensis [#] (H. navarroensis) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Pseudoguembelina costulata [#] (P. costulata) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Pseudoguembelina palpebra [#] (P. palpebra) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Pseudotextularia elegans [#] (P. elegans) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Racemiguembelina fructicosa [#] (R. fructicosa) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Racemiguembelina glabrata [#] (R. glabrata) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Rosita contusa [#] (R. contusa) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Rugoglobigerina hexacamerata [#] (R. hexacamerata) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Rugoglobigerina macrocephala [#] (R. macrocephala) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Rugoglobigerina reicheli [#] (R. reicheli) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Rugoglobigerina rugosa [#] (R. rugosa) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Rugoglobigerina scotti [#] (R. scotti) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Foraminifera, benthic [#] (Foram benth) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Foraminifera, reworked cretaceous [#] (Foram rew cret) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+License:	Creative Commons Attribution 4.0 International (CC-BY-4.0) (URI: https://creativecommons.org/licenses/by/4.0/)
+Status:	Curation Level: Enhanced curation (URI: https://wiki.pangaea.de/wiki/Curation_levels)
+Size:	3363 data points
+*/
+Event	Sample label (DSDP/ODP/IODP sample designation)	Depth comp [mcd]	Plank foram zone	Age model [ka] (La2011, Determinded after Din...)	E. edita [#] (Absolute abundance)	E. eobulloides [#] (Absolute abundance)	E. spiralis [#] (Absolute abundance)	G. archeocompressa [#] (Absolute abundance)	G. chapmani [#] (Absolute abundance)	G. compressa [#] (Absolute abundance)	G. ehrenbergi [#] (Absolute abundance)	G. imitata [#] (Absolute abundance)	G. planocompressa [#] (Absolute abundance)	H. holmdelensis [#] (Absolute abundance)	H. monmouthensis [#] (Absolute abundance)	I. albeari [#] (Absolute abundance)	I. pusilla [#] (Absolute abundance)	M. acutispira [#] (Absolute abundance)	M. angulata [#] (Absolute abundance)	M. apanthesma [#] (Absolute abundance)	M. conicotruncata [#] (Absolute abundance)	M. occlusa [#] (Absolute abundance)	M. pasionensis [#] (Absolute abundance)	M. praeangulata [#] (Absolute abundance)	M. velascoensis [#] (Absolute abundance)	P. inconstans [#] (Absolute abundance)	P. pseudoinconstans [#] (Absolute abundance)	P. taurica [#] (Absolute abundance)	P. uncinata [#] (Absolute abundance)	G. archeocompressa [#] (Absolute abundance)	P. pseudobulloides [#] (Absolute abundance)	P. varianta [#] (Absolute abundance)	P. variospira [#] (Absolute abundance)	S. cancellata [#] (Absolute abundance)	S. triangularis [#] (Absolute abundance)	S. triloculinoides [#] (Absolute abundance)	S. trivialis [#] (Absolute abundance)	G. daubjergensis [#] (Absolute abundance)	G. cretacea [#] (Absolute abundance)	C. midwayensis [#] (Absolute abundance)	C. morsei [#] (Absolute abundance)	P. alabamensis [#] (Absolute abundance)	P. eugubina [#] (Absolute abundance)	R. cretacea [#] (Absolute abundance)	W. claytonensis [#] (Absolute abundance)	W. hornerstownensis [#] (Absolute abundance)	Z. waiparaensis [#] (Absolute abundance)	A. mayaroensis [#] (Absolute abundance)	G. citae [#] (Absolute abundance)	G. subcarinatus [#] (Absolute abundance)	G. aegyptiaca [#] (Absolute abundance)	G. arca [#] (Absolute abundance)	G. falsostuarti [#] (Absolute abundance)	G. havanensis [#] (Absolute abundance)	G. petaloidea [#] (Absolute abundance)	G. conica [#] (Absolute abundance)	G. stuarti [#] (Absolute abundance)	H. navarroensis [#] (Absolute abundance)	P. costulata [#] (Absolute abundance)	P. palpebra [#] (Absolute abundance)	P. elegans [#] (Absolute abundance)	R. fructicosa [#] (Absolute abundance)	R. glabrata [#] (Absolute abundance)	R. contusa [#] (Absolute abundance)	R. hexacamerata [#] (Absolute abundance)	R. macrocephala [#] (Absolute abundance)	R. reicheli [#] (Absolute abundance)	R. rugosa [#] (Absolute abundance)	R. scotti [#] (Absolute abundance)	Foram benth [#] (Absolute abundance)	Foram rew cret [#] (Absolute abundance)
+208-1262B	208-1262B-19H-5	185.05	P3b	60976.519	0	0	0	0	12	0	1	0	0	0	0	10	2	1	37	53	0	45	1	0	0	0	0	0	0	0	1	30	3	67	21	4	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	10	
+208-1262C	208-1262C-10H-3	186.51	P3b	61138.480	0	0	0	0	16	0	0	2	0	0	0	6	0	1	19	84	2	34	5	0	3	0	0	0	0	0	0	21	3	84	15	4	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	
+208-1262C	208-1262C-10H-3	187.23	P3b	61230.571	0	0	0	0	23	0	5	1	0	0	0	6	0	1	20	82	1	24	1	0	4	0	0	0	0	0	0	13	5	93	12	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	4	
+208-1262C	208-1262C-10H-4	187.95	P3b	61300.514	0	0	0	0	21	0	1	6	0	0	0	6	0	1	19	75	1	41	4	0	1	0	0	0	0	0	0	24	7	53	18	6	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	
+208-1262C	208-1262C-10H-4	188.67	P3b	61408.000	0	0	0	0	16	0	1	0	0	0	0	9	0	0	36	87	2	30	4	0	1	0	0	0	0	0	0	29	7	56	8	6	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	8	
+208-1262C	208-1262C-10H-5	189.39	P3b	61497.200	0	0	0	0	18	0	1	2	0	0	0	5	1	0	21	70	6	29	3	0	5	0	0	0	0	0	0	53	9	62	4	5	0	0	0	1	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	4	
+208-1262C	208-1262C-10H-5	190.11	P3b	61574.580	0	0	0	0	37	0	3	0	0	0	0	7	3	0	22	32	0	8	0	0	2	0	0	0	0	0	0	50	5	110	5	12	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	7	
+208-1262C	208-1262C-10H-6	190.83	P3b	61657.724	0	0	0	0	34	0	20	0	0	0	0	19	0	0	28	25	0	4	0	0	0	0	0	0	0	0	2	59	4	80	9	8	0	0	0	5	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	
+208-1262B	208-1262B-20H-2	191.56	P3b	61746.244	0	0	0	0	17	0	10	1	0	0	0	5	1	0	13	38	2	0	0	0	0	0	0	0	0	0	0	90	34	66	7	10	0	0	0	2	0	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0		
+208-1262B	208-1262B-20H-3	192.28	P3b	61825.245	0	0	0	0	26	0	14	0	0	0	0	12	2	0	26	37	0	0	0	0	1	0	0	0	0	0	2	51	8	89	3	20	0	0	0	3	0	0	0	1	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	3	
+208-1262B	208-1262B-20H-3	193.00	P3b	61885.490	0	0	0	0	46	0	17	0	0	0	0	5	0	0	23	20	0	0	0	0	1	0	0	0	0	0	1	63	7	77	6	18	0	0	0	10	0	1	0	0	0	4	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	
+208-1262B	208-1262B-20H-3	193.72	P3b	61990.598	0	0	0	0	36	0	14	0	0	0	0	2	0	0	32	23	1	0	0	0	3	0	0	0	0	0	0	54	3	96	4	22	0	0	0	9	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	
+208-1262B	208-1262B-20H-4	194.47	P3b	62074.565	0	0	0	0	14	0	24	1	0	0	0	3	1	0	39	20	0	0	0	0	1	0	0	0	0	0	0	73	6	87	2	19	0	0	0	6	0	0	0	0	0	2	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	
+208-1262B	208-1262B-20H-4	195.19	P3b	62139.000	0	0	0	0	7	0	39	0	0	0	0	3	6	0	33	11	3	0	0	0	0	0	0	0	0	0	0	84	3	79	1	18	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	9	
+208-1262C	208-1262C-11H-2	195.90	P3a	62233.609	0	0	0	0	5	1	17	0	0	0	0	0	0	0	17	3	0	0	0	4	0	4	0	0	2	0	0	107	3	98	2	28	0	0	0	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	5	
+208-1262C	208-1262C-11H-3	197.70	P3a	62445.240	0	0	0	0	0	0	18	0	0	0	0	0	1	0	13	0	0	0	0	12	0	16	0	0	20	0	0	94	4	91	0	23	0	0	0	2	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	4	
+208-1262C	208-1262C-11H-3	198.42	P3a	62544.569	0	0	0	0	0	11	22	1	0	0	0	0	0	0	17	0	0	0	0	14	0	17	0	0	14	0	1	76	2	98	0	24	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	3	
+208-1262C	208-1262C-11H-4	199.14	P2	62663.833	0	0	0	0	0	3	12	0	0	0	0	0	0	0	0	0	0	0	0	26	0	34	0	0	43	0	3	79	0	72	0	18	3	0	0	2	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	4	
+208-1262C	208-1262C-11H-4	199.86	P2	62726.083	0	0	0	0	0	11	16	0	0	0	0	0	0	0	0	0	0	0	0	8	0	29	8	0	18	0	5	74	0	77	0	39	5	0	0	4	0	0	0	0	0	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	
+208-1262C	208-1262C-11H-5	200.58	P2	62795.745	0	0	0	0	0	23	16	0	0	0	0	0	0	0	0	0	0	0	0	6	0	34	5	0	14	0	4	71	0	81	0	26	13	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	6	
+208-1262C	208-1262C-11H-5	201.30	P2	62884.000	0	0	1	0	0	20	3	0	0	0	0	0	0	0	0	0	0	0	0	3	0	44	16	0	14	0	1	86	0	46	0	31	29	0	0	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	3	
+208-1262B	208-1262B-21H-1	202.14	P2	62993.256	4	0	0	0	0	28	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	31	8	0	4	0	2	85	0	35	0	57	34	6	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	3	
+208-1262B	208-1262B-21H-2	202.86	P1c	63073.073	2	0	0	0	0	53	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	39	11	0	0	0	2	90	0	13	0	48	26	11	0	1	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	3	
+208-1262C	208-1262C-12H-1	203.58	P1c	63178.857	4	0	0	0	0	34	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	38	27	0	0	0	3	68	0	18	0	56	30	15	0	3	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	3	
+208-1262C	208-1262C-12H-2	204.30	P1c	63403.800	7	0	0	0	0	26	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	31	17	0	0	0	2	91	0	22	0	43	28	17	0	5	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	6	
+208-1262C	208-1262C-12H-2	205.02	P1c	63572.300	3	0	0	0	0	28	0	0	6	0	0	0	0	0	0	0	0	0	0	0	0	30	39	0	0	0	5	41	0	24	0	55	38	29	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	
+208-1262C	208-1262C-12H-2	205.77	P1c	63813.471	2	0	0	0	0	30	0	0	6	0	0	0	0	0	0	0	0	0	0	0	0	19	61	0	0	0	5	41	0	23	0	57	29	14	0	6	2	1	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	3	
+208-1262C	208-1262C-12H-3	206.49	P1c	63948.467	1	0	0	0	0	29	0	0	12	0	0	0	0	0	0	0	0	0	0	0	0	43	26	5	0	0	4	29	0	31	0	53	43	16	0	5	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	3	
+208-1262C	208-1262C-12H-3	207.21	P1c	64086.536	4	0	0	0	0	47	0	0	15	0	0	0	0	0	0	0	0	0	0	0	0	36	36	17	0	0	2	11	0	3	0	31	34	42	0	9	2	1	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	8	
+208-1262C	208-1262C-12H-4	207.93	P1c	64249.405	5	0	0	0	0	47	0	0	8	0	0	0	0	0	0	0	0	0	0	0	0	36	38	33	0	0	1	14	0	0	0	36	38	32	0	8	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	4	
+208-1262C	208-1262C-12H-4	208.71	P1c	64418.948	2	0	0	0	0	46	0	0	13	0	0	0	0	0	0	0	0	0	0	0	0	23	44	58	0	0	2	12	0	0	0	27	53	7	0	9	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	
+208-1262C	208-1262C-12H-5	209.43	P1c	64566.741	2	0	0	0	0	39	0	0	14	0	0	0	0	0	0	0	0	0	0	0	0	14	34	65	0	0	2	9	0	0	0	28	51	11	0	15	1	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	13	
+208-1262C	208-1262C-12H-6	210.36	P1c	64712.778	3	0	0	0	0	4	0	0	32	0	0	0	0	0	0	0	0	0	0	0	0	9	66	70	0	0	1	7	0	0	0	27	61	6	0	7	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	6	
+208-1262C	208-1262C-12H-6	211.08	P1b	64858.316	2	0	0	1	0	0	0	0	53	0	0	0	0	0	0	0	0	0	0	0	0	0	32	83	0	0	3	0	0	0	0	15	56	19	0	6	0	1	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	27	
+208-1262B	208-1262B-22H-1	212.03	P1b	65075.677	5	2	0	2	0	0	0	0	45	0	0	0	0	0	0	0	0	0	0	0	0	0	35	66	0	0	3	0	0	0	0	22	63	34	0	15	3	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	4	
+208-1262B	208-1262B-22H-2	213.03	P1b	65222.182	32	7	0	1	0	0	0	0	21	0	0	0	0	0	0	0	0	0	0	0	0	0	46	84	0	0	6	0	0	0	0	10	37	9	0	13	0	0	0	0	0	6	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	28	
+208-1262B	208-1262B-22H-3	214.00	P1b	65452.196	42	29	0	3	0	0	0	0	26	0	0	0	0	0	0	0	0	0	0	0	0	0	24	56	0	0	3	0	0	0	0	33	41	5	0	18	7	0	0	0	0	10	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	3	
+208-1262C	208-1262C-13H-1	214.90	P1b	65645.938	44	25	0	5	0	0	0	0	32	0	0	0	0	0	0	0	0	0	0	0	0	0	28	62	0	0	2	0	0	0	0	42	35	1	0	12	2	0	0	0	0	6	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	4	
+208-1262B	208-1262B-22H-3	215.08	P1b	65674.401	28	38	0	1	0	0	0	0	13	0	0	0	0	0	0	0	0	0	0	0	0	0	19	57	0	0	3	0	0	0	0	47	44	6	10	6	12	0	0	0	2	8	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	8	
+208-1262B	208-1262B-22H-4	215.23	P1b	65713.650	35	47	0	1	0	0	0	0	8	0	0	0	0	0	0	0	0	0	0	0	0	0	11	51	0	0	3	0	0	0	0	52	34	1	3	18	8	0	0	0	0	4	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	28	
+208-1262C	208-1262C-13H-1	215.64	P1b	65852.500	33	49	0	2	0	0	0	0	7	0	0	0	0	0	0	0	0	0	0	0	0	0	15	42	0	0	9	0	0	0	0	47	28	1	23	17	8	0	0	0	0	6	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	14	
+208-1262C	208-1262C-13H-1	215.90	P1b	65911.000	16	54	0	5	0	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	12	36	0	0	17	0	0	0	0	43	34	2	14	20	7	0	0	0	0	6	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	14	18
+208-1262C	208-1262C-13H-2	216.10	P1b	65954.684	8	67	0	1	0	0	0	0	3	0	0	0	0	0	0	0	0	0	0	0	0	0	11	18	0	0	6	0	0	0	0	25	27	2	29	58	16	0	0	0	0	18	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	8	4
+208-1262C	208-1262C-13H-2	216.32	P1b	65996.605	7	54	0	1	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	10	16	0	0	7	0	0	0	0	15	35	0	43	47	38	0	0	0	0	19	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	9	
+208-1262C	208-1262C-13H-2	216.57	P1a	66012.884	5	49	0	4	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	8	15	0	0	10	0	0	0	0	0	56	0	44	27	18	0	0	0	1	12	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	15	31
+208-1262C	208-1262C-13H-2	216.69	P?	66020.698	2	24	0	6	0	0	0	0	2	3	2	0	0	0	0	0	0	0	0	0	0	0	0	11	0	6	0	0	0	0	0	0	27	0	11	2	12	0	34	0	6	19	4	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	19	109
+208-1262C	208-1262C-13H-2	216.87	Cretaceous	66029.006	0	0	0	0	0	0	0	0	0	51	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	3	12	6	2	5	3	1	87	12	36	23	21	18	3	2	2	6	2	1	4	
+208-1262C	208-1262C-13H-3	217.54	Cretaceous	66058.343	0	0	0	0	0	0	0	0	0	37	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	2	1	1	5	15	11	2	12	6	3	51	21	26	27	22	20	3	10	7	1	8	3	6	

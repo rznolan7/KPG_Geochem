@@ -43,6 +43,81 @@ load(paste0(wd, "/Data/d18O_ref.RData"))
 ##optional - d18O_ref loads d18O_ref
 ```
 
+##The Simple Way
+```{r}
+age_data <- read.csv(paste0(wd, "/Data/Age_dates.csv"))
+## Biozones
+#set up ages of max and min points within each biozone and extrapolate linearly
+library(dplyr)
+bioz <- age_data %>% filter(Type == "Biozone")
+bioz <- bioz %>% rename("Biozone" = "Zone")
+
+#standardize biozones in data
+df_bioz_join <- ref_dat %>% mutate(
+  Biozone = case_when(
+    Biozone %in% c("P alpha", "P-alpha") ~ "Palpha",
+    Biozone %in% c("KPgB") ~ "P0",
+    TRUE ~ Biozone
+  )
+)
+#calculate biozones by linear extrapolation using meter values
+df_bioz_join <- df_bioz_join %>% 
+  left_join(bioz, by = "Biozone")
+
+bioz_ref <- data.frame()
+
+for(i in seq_along(unique(df_bioz_join$Section))){
+  dat <- df_bioz_join %>% filter(Section == unique(df_bioz_join$Section)[i]) #separate each section
+  dat <- dat %>%
+  group_by(Biozone) %>% mutate( #get min and max meter within the biozone for this section
+    meter_min = min(meter, na.rm = TRUE),
+    meter_max = max(meter, na.rm = TRUE),
+    rel_pos = ifelse(meter_max == meter_min, 0, #get relative position in meterage within that zone
+              (meter - meter_min) / (meter_max - meter_min)),
+    Age = Bottom - rel_pos * (Bottom - Top) #add in age based on linear extrapolation
+  ) %>%
+  ungroup()
+  bioz_ref <- rbind(bioz_ref, dat)
+}
+
+ref_dat_age <- rbind(ref_dat_age, bioz_ref[,c(colnames(ref_dat_age))]) #add to ref data w ages
+##go back in and keep biozone so i can make some pretty plots later
+rm(bioz_ref, dat, df_bioz_join, bioz)
+
+
+#==============================================================================
+##Magnetic Geochron Reversals
+#same for mag reversals
+mag <- age_data %>% filter(Type == "Magnetostrat")
+mag <- mag %>% rename("Chron" = "Zone")
+
+#calculate biozones by linear extrapolation using meter values
+df_mag_join <- ref_dat_mag %>% 
+  left_join(mag, by = "Chron")
+
+mag_ref <- data.frame()
+
+for(i in seq_along(unique(df_mag_join$Section))){
+  dat <- df_mag_join %>% filter(Section == unique(df_mag_join$Section)[i]) #separate each section
+  dat <- dat %>%
+  group_by(Chron) %>% mutate( #get min and max meter within the biozone for this section
+    meter_min = min(meter, na.rm = TRUE),
+    meter_max = max(meter, na.rm = TRUE),
+    rel_pos = ifelse(meter_max == meter_min, 0, #get relative position in meterage within that zone
+              (meter - meter_min) / (meter_max - meter_min)),,
+    Age = Bottom - rel_pos * (Bottom - Top)
+  ) %>%
+  ungroup()
+  mag_ref <- rbind(mag_ref, dat)
+}
+
+ref_dat_age <- rbind(ref_dat_age, mag_ref[,c(colnames(ref_dat_age))]) #add to ref data w ages
+##go back in and keep biozone so i can make some pretty plots later
+rm(mag_ref, dat, df_mag_join, mag)
+```
+
+
+## The Stats Way
 ```{r}
 #Hay, C.C., et al., 2019, A library of early Cambrian chemostratigraphic correlations from a reproducible algorithm: Geology, v. 47, p. 457–460, https://doi.org/10.1130/G46019.1
 #Using algorithm to align columns 
@@ -300,18 +375,53 @@ library(dplyr)
 biozone_df <- biozone_df[,c(1:7,9)] #pick biozones based on d18O
 biozone_df <- biozone_df %>% rename("Biozone" = colnames(biozone_df[ncol(biozone_df)])) #rename last col to "Biozone"
 
+#convert to age for biozones in my data (as assigned by SMdO data)
+age_data <- read.csv(paste0(wd, "/Data/Age_dates.csv"))
+#set up ages of max and min points within each biozone and extrapolate linearly
+bioz <- age_data %>% filter(Type == "Biozone")
+bioz <- bioz %>% rename("Biozone" = "Zone")
 
-all_sect <- rbind(biozone_df, ref_dat)
+#standardize biozones in data
+df_bioz_join <- biozone_df %>% mutate(
+  Biozone = case_when(
+    Biozone %in% c("P alpha", "P-alpha") ~ "Palpha",
+    Biozone %in% c("KPgB") ~ "P0",
+    TRUE ~ Biozone
+  )
+)
+#calculate biozones by linear extrapolation using meter values
+df_bioz_join <- df_bioz_join %>% 
+  left_join(bioz, by = "Biozone")
+
+bioz_ref <- data.frame()
+
+for(i in seq_along(unique(df_bioz_join$Section))){
+  dat <- df_bioz_join %>% filter(Section == unique(df_bioz_join$Section)[i]) #separate each section
+  dat <- dat %>%
+  group_by(Biozone) %>% mutate( #get min and max meter within the biozone for this section
+    meter_min = min(meter, na.rm = TRUE),
+    meter_max = max(meter, na.rm = TRUE),
+    rel_pos = ifelse(meter_max == meter_min, 0, #get relative position in meterage within that zone
+              (meter - meter_min) / (meter_max - meter_min)),
+    Age = Bottom - rel_pos * (Bottom - Top) #add in age based on linear extrapolation
+  ) %>%
+  ungroup()
+  bioz_ref <- rbind(bioz_ref, dat)
+}
+
+all_sect <- rbind(ref_dat_age, bioz_ref[,c(colnames(ref_dat_age))]) #add to ref data w ages
+
+rm(bioz_ref, dat, df_bioz_join, bioz)
 ```
 
-
 ```{r}
+
 rm(alignment_d13C, alignment_d18O, alignment_d18O_Hull, indexed_d18O, indexed_ref, indexed_test, bioz_added)
 ```
 
 
 ```{r}
-save(biozone_assigned, age_assigned, all_sect,
+save(biozone_assigned, age_assigned, all_sect, ref_dat_age,
      file = paste0(wd, "/Data/align_dat.RData")) #save data objects we will use later
 ```
 

@@ -1,0 +1,83 @@
+/* DATA DESCRIPTION:
+Citation:	Birch, Heather; Schmidt, Daniela N; Coxall, Helen; Kroon, Dick; Ridgwell, Andy (2021): Genera abundance counts of planktic foraminifera (<38µm) from ODP Site 208-1262 [dataset]. PANGAEA, https://doi.org/10.1594/PANGAEA.935499, 
+	In: Birch, H et al. (2021): Raw Data for article Ecosystem Function after the K/Pg Extinction: Decoupling of Marine Carbon Pump and Diversity [dataset bundled publication]. PANGAEA, https://doi.org/10.1594/PANGAEA.935502
+Abstract:	Core samples were washed over a 38µm sieve and dried in an oven at 40°C. Planktic foraminifera species and genera abundance counts were made on 49 samples.
+Keyword(s):	Biological pump; ecology; ecosystem function; K/Pg; Planktonic foraminifera
+Related to:	Birch, Heather; Schmidt, Daniela N; Coxall, Helen K; Kroon, Dick; Ridgwell, Andy (2021): Ecosystem function after the K/Pg extinction: decoupling of marine carbon pump and diversity. Proceedings of the Royal Society B-Biological Sciences, 288(1953), 20210863, https://doi.org/10.1098/rspb.2021.0863
+Coverage:	MEDIAN LATITUDE: -27.185740 * MEDIAN LONGITUDE: 1.576990 * SOUTH-BOUND LATITUDE: -27.185830 * WEST-BOUND LONGITUDE: 1.576980 * NORTH-BOUND LATITUDE: -27.185650 * EAST-BOUND LONGITUDE: 1.577000
+	DATE/TIME START: 2003-03-26T12:40:00 * DATE/TIME END: 2003-03-29T05:15:00
+	MINIMUM ELEVATION: -4753.6 m * MAXIMUM ELEVATION: -4753.6 m
+Event(s):	208-1262B * LATITUDE: -27.185830 * LONGITUDE: 1.577000 * DATE/TIME START: 2003-03-26T12:40:00 * DATE/TIME END: 2003-03-27T21:25:00 * ELEVATION: -4753.6 m * Penetration: 209.9 m * Recovery: 212.53 m * LOCATION: Walvis Ridge, Southeast Atlantic Ocean * CAMPAIGN: Leg208 (URI: https://doi.org/10.2973/odp.proc.ir.208.2004) * BASIS: Joides Resolution (URI: https://www-odp.tamu.edu:443/resolutn.html) * METHOD/DEVICE: Drilling/drill rig (DRILL) * COMMENT: 23 cores; 209.9 m cored; 0 m drilled; 101.3 % recovery
+	208-1262C * LATITUDE: -27.185650 * LONGITUDE: 1.576980 * DATE/TIME START: 2003-03-27T21:25:00 * DATE/TIME END: 2003-03-29T05:15:00 * ELEVATION: -4753.6 m * Penetration: 212.5 m * Recovery: 125.93 m * LOCATION: Walvis Ridge, Southeast Atlantic Ocean * CAMPAIGN: Leg208 (URI: https://doi.org/10.2973/odp.proc.ir.208.2004) * BASIS: Joides Resolution (URI: https://www-odp.tamu.edu:443/resolutn.html) * METHOD/DEVICE: Drilling/drill rig (DRILL) * COMMENT: 14 cores; 122.5 m cored; 90 m drilled; 102.8 % recovery
+Parameter(s):	Event label (Event) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk)
+	Sample code/label (Sample label) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: DSDP/ODP/IODP sample designation (URI: hdl:10013/epic.27914.d001)
+	Depth, composite [mcd] (Depth comp) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk)
+	Planktic foraminifera zone (Plank foram zone) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk)
+	Age model [ka] (Age model) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Determinded after Dinarès-Turell et al. (2014) (URI: https://doi.org/10.1016/j.epsl.2014.08.027) * COMMENT: La2011
+	Hedbergella spp. [#] (Hedbergella spp.) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Parvularugoglobigerina spp. [#] (Parvularugoglobigerina spp.) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Zeauvigerina spp. [#] (Zeauvigerina spp.) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Guembelitria sp. [#] (Guembelitria sp.) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Woodringina spp. [#] (Woodringina spp.) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Rectoguembelina spp. [#] (Rectoguembelina spp.) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Eoglobigerina spp. [#] (Eoglobigerina spp.) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Globoconusa spp. [#] (Globoconusa spp.) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Praemurica spp. [#] (Praemurica spp.) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Chiloguembelina spp. [#] (Chiloguembelina spp.) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Globanomalina spp. [#] (Globanomalina spp.) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Subbotina spp. [#] (Subbotina spp.) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance * COMMENT: Subbotina/Parasubbotina spp.
+	Morozovella spp. [#] (Morozovella spp.) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+	Igorina spp. [#] (Igorina spp.) * PI: Birch, Heather (https://orcid.org/0000-0003-1515-0645, heather.birch@bristol.ac.uk) * METHOD/DEVICE: Absolute abundance
+License:	Creative Commons Attribution 4.0 International (CC-BY-4.0) (URI: https://creativecommons.org/licenses/by/4.0/)
+Status:	Curation Level: Enhanced curation (URI: https://wiki.pangaea.de/wiki/Curation_levels)
+Size:	864 data points
+*/
+Event	Sample label	Depth comp [mcd]	Plank foram zone	Age model [ka]	Hedbergella spp. [#]	Parvularugoglobigerina spp. [#]	Zeauvigerina spp. [#]	Guembelitria sp. [#]	Woodringina spp. [#]	Rectoguembelina spp. [#]	Eoglobigerina spp. [#]	Globoconusa spp. [#]	Praemurica spp. [#]	Chiloguembelina spp. [#]	Globanomalina spp. [#]	Subbotina spp. [#]	Morozovella spp. [#]	Igorina spp. [#]
+208-1262B	208-1262B-19H-5	185.05	P3b	60976.519	0	0	0	0	0	0	0	0	0	4	59	218	271	24
+208-1262C	208-1262C-10H-3	186.51	P3b	61138.480	0	0	6	0	0	0	0	0	0	19	96	256	203	9
+208-1262C	208-1262C-10H-3	187.23	P3b	61230.571	0	0	2	0	1	0	0	0	0	5	96	241	236	10
+208-1262C	208-1262C-10H-4	187.95	P3b	61300.514	0	1	1	0	2	0	0	0	0	10	107	211	242	8
+208-1262C	208-1262C-10H-4	188.67	P3b	61408.000	0	0	2	0	1	0	0	0	0	6	110	218	234	15
+208-1262C	208-1262C-10H-5	189.39	P3b	61497.200	0	0	10	0	3	0	0	0	0	12	148	226	178	6
+208-1262C	208-1262C-10H-5	190.11	P3b	61574.580	0	0	4	0	16	0	0	0	0	24	127	321	90	12
+208-1262C	208-1262C-10H-6	190.83	P3b	61657.724	0	0	8	0	38	0	0	0	0	60	130	252	78	29
+208-1262B	208-1262B-20H-2	191.56	P3b	61746.244	0	0	17	0	34	0	0	0	0	35	108	317	76	6
+208-1262B	208-1262B-20H-3	192.28	P3b	61825.245	0	0	11	0	43	1	0	0	0	24	129	279	89	17
+208-1262B	208-1262B-20H-3	193.00	P3b	61885.490	0	1	6	0	36	0	0	0	0	33	157	289	66	7
+208-1262B	208-1262B-20H-3	193.72	P3b	61990.598	0	0	3	0	28	0	0	0	0	41	143	300	75	2
+208-1262B	208-1262B-20H-4	194.47	P3b	62074.565	0	0	7	0	24	0	0	0	0	32	136	313	80	5
+208-1262B	208-1262B-20H-4	195.19	P3b	62139.000	0	0	6	0	24	0	0	0	0	28	136	319	60	9
+208-1262C	208-1262C-11H-2	195.90	P3a	62233.609	0	0	4	0	39	1	0	0	10	51	92	352	42	0
+208-1262C	208-1262C-11H-3	197.70	P3a	62445.240	0	1	3	0	17	0	0	0	48	22	93	374	33	1
+208-1262C	208-1262C-11H-3	198.42	P3a	62544.569	0	0	4	0	19	2	0	0	44	23	108	360	37	0
+208-1262C	208-1262C-11H-4	199.14	P2	62663.833	0	1	3	0	25	0	0	0	94	39	84	314	30	0
+208-1262C	208-1262C-11H-4	199.86	P2	62726.083	0	0	7	0	72	2	0	0	62	50	88	299	9	0
+208-1262C	208-1262C-11H-5	200.58	P2	62795.745	0	0	4	0	63	0	0	0	84	35	104	293	8	0
+208-1262C	208-1262C-11H-5	201.30	P2	62884.000	0	0	2	0	38	2	1	0	106	35	96	310	3	0
+208-1262B	208-1262B-21H-1	202.14	P2	62993.256	0	0	4	0	36	0	5	54	58	23	84	330	1	0
+208-1262B	208-1262B-21H-2	202.86	P1c	63073.073	0	0	3	0	37	0	2	47	68	25	109	303	0	0
+208-1262C	208-1262C-12H-1	203.58	P1c	63178.857	0	0	4	0	48	0	4	56	83	26	87	285	0	0
+208-1262C	208-1262C-12H-2	204.30	P1c	63403.800	0	0	3	0	28	0	9	53	62	44	87	305	0	0
+208-1262C	208-1262C-12H-2	205.02	P1c	63572.300	0	0	1	0	44	1	3	68	92	46	80	257	0	0
+208-1262C	208-1262C-12H-2	205.77	P1c	63813.471	0	1	1	0	29	2	2	47	109	38	88	275	0	0
+208-1262C	208-1262C-12H-3	206.49	P1c	63948.467	0	0	0	0	46	0	1	67	113	64	79	226	0	0
+208-1262C	208-1262C-12H-3	207.21	P1c	64086.536	0	1	0	0	27	5	4	93	149	60	120	131	0	0
+208-1262C	208-1262C-12H-4	207.93	P1c	64249.405	0	0	4	0	38	2	5	61	175	61	114	135	0	0
+208-1262C	208-1262C-12H-4	208.71	P1c	64418.948	0	0	2	0	39	3	2	17	204	61	107	156	0	0
+208-1262C	208-1262C-12H-5	209.43	P1c	64566.741	0	0	0	0	32	2	2	26	210	58	106	148	0	0
+208-1262C	208-1262C-12H-6	210.36	P1c	64712.778	0	0	6	0	22	3	3	28	223	41	102	164	0	0
+208-1262C	208-1262C-12H-6	211.08	P1b	64858.316	0	1	3	0	17	0	2	40	209	32	121	142	0	0
+208-1262B	208-1262B-22H-1	212.03	P1b	65075.677	0	0	8	0	42	0	7	67	162	76	99	131	0	0
+208-1262B	208-1262B-22H-2	213.03	P1b	65222.182	0	0	6	0	58	0	45	28	221	72	40	89	0	0
+208-1262B	208-1262B-22H-3	214.00	P1b	65452.196	0	0	3	0	78	0	88	18	134	94	56	122	0	0
+208-1262C	208-1262C-13H-1	214.90	P1b	65645.938	0	0	3	3	77	0	76	6	91	86	58	132	0	0
+208-1262B	208-1262B-22H-3	215.08	P1b	65674.401	0	0	3	37	65	0	85	17	125	95	25	141	0	0
+208-1262B	208-1262B-22H-4	215.23	P1b	65713.650	0	0	1	32	46	0	108	15	116	87	15	148	0	0
+208-1262C	208-1262C-13H-1	215.64	P1b	65852.500	0	0	4	94	35	0	118	19	83	82	16	124	0	0
+208-1262C	208-1262C-13H-1	215.90	P1b	65911.000	0	0	2	95	43	0	93	10	69	97	11	133	0	0
+208-1262C	208-1262C-13H-2	216.10	P1b	65954.684	0	0	0	118	61	0	104	5	46	147	5	94	0	0
+208-1262C	208-1262C-13H-2	216.32	P1b	65996.605	0	0	0	111	57	1	98	4	38	168	4	103	0	0
+208-1262C	208-1262C-13H-2	216.57	P1a	66012.884	0	0	0	98	57	0	80	2	30	165	12	98	0	0
+208-1262C	208-1262C-13H-2	216.69	P?	66020.698	5	85	16	44	61	0	42	0	14	78	14	71	0	0
+208-1262C	208-1262C-13H-2	216.87	Cret.	66029.006	117	0	0	15	0	0	0	0	0	0	0	0	0	0
+208-1262C	208-1262C-13H-3	217.54	Cret.	66058.343	104	0	0	15	0	0	0	0	0	0	0	0	0	0

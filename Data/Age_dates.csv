@@ -1,0 +1,13 @@
+Type,Zone,Top,Bottom,Source (Top),Source (Bottom)
+Biozone,P1c,63.888,65.485,Arenillas etal (2021),Arenillas etal (2021)
+Biozone,P1b,65.485,65.797,Arenillas etal (2021),Arenillas etal (2021)
+Biozone,P1a,65.803,65.93,Arenillas etal (2021),Arenillas etal (2021)
+Biozone,Palpha,65.93,65.996,Arenillas etal (2021),Arenillas etal (2021)
+Biozone,P0,65.996,66.052,Arenillas etal (2021),Sprain etal (2018)
+Magnetostrat,C28r,64.782,64.976,Jones etal (2009) duration using Sprain etal (2018) KPg age,Cande & Kent (1995) adjusted for Sprain et al (2018)
+Magnetostrat,C29n,64.976,65.724,Cande & Kent (1995) adjusted for Sprain et al (2018),Sprain etal (2018)
+Magnetostrat,C29r,65.724,66.311,Sprain etal (2018),Sprain etal (2018)
+Magnetostrat,C30n,66.311,68.41,Sprain etal (2018),Cande & Kent (1995) adjusted for Sprain etal (2018)
+Magnetostrat,C30r,68.41,68.535,Cande & Kent (1995) adjusted for Sprain etal (2018),Cande & Kent (1995) adjusted for Sprain etal (2018)
+Biozone,P. hantkeninoides,66.052,66.192,Sprain etal (2018),Husson etal (2014)
+Biozone,D. iris/CC26b,66.052,66.402,,

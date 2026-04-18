@@ -95,25 +95,26 @@ rm(tcc_SMdO24)
 library(dplyr)
 
 #Jones etal 2023 - El Kef
-elkef_J23 <- read.csv(paste0(wd, "/Data/Jones_etal_2023_ElKef.csv"))
-elkef_J23$Section <- paste(elkef_J23$Hole, elkef_J23$Core)
-kef <- elkef_J23[, c("Composite.core.depth..mcd.", "Section", "d13C", "d18O", "Biozone")]
-kef <- kef %>% rename("meter" = "Composite.core.depth..mcd.")
-kef$Origin <- "Jones"
-kef$lat <- 36.2
-kef$lng <- 8.6
-kef<- kef %>% mutate(
-  meter = (meter - 61.42) #set so KPg is at 0
-)
-
-rm(elkef_J23)
-
 #Jones, Heather L.; al., et (2022). Supplemental Material: Stratigraphy of the Cretaceous/Paleogene (K/Pg) boundary at the Global Stratotype Section and Point (GSSP) in El Kef, Tunisia: New insights from the El Kef Coring Project. Geological Society of America. Journal contribution. https://doi.org/10.1130/GSAB.S.21445755.v1
 
 #El Kef Data Notes
 #Hole A - KPg is in core 16
 #Holes B and C are further up in Danian
 #Holes D and D have KPg at core 10
+elkef_J23 <- read.csv(paste0(wd, "/Data/Jones_etal_2023_ElKef.csv"))
+elkef_J23$Section <- paste0(elkef_J23$Hole, "_", elkef_J23$Core)
+kef <- elkef_J23[, c("Composite.core.depth..mcd.", "Section", "d13C", "d18O", "Biozone")]
+kef <- kef %>% rename("meter" = "Composite.core.depth..mcd.")
+kef$Origin <- "Jones"
+kef$lat <- 36.2
+kef$lng <- 8.6
+kef<- kef %>% mutate(
+  meter = ((meter - 61.42)*(-1)) #set so KPg is at 0, with pos values above KPg and neg below
+)
+
+rm(elkef_J23)
+
+
 
 #Sepulveda et al 2019 - 
 #Sepúlveda, Julio; Alegret, Laia; Haddad, Emily; Cao, Changqun; Summons, Roger E; Thomas, Ellen (2019): Bulk elemental and stable isotope data across the Cretaceous-Paleogene boundary [dataset]. PANGAEA, https://doi.org/10.1594/PANGAEA.902759, 
@@ -155,6 +156,64 @@ for (j in seq_along(unique(euro$Section))){
 euro <- euro2
 rm(euro2, subsect, euro_S19) #clean up env
 
+
+#Tobin etal 2014
+#Tobin, T.S., Wilson, G.P., Eiler, J.M. and Hartman, J.H., 2014. Environmental change across a terrestrial Cretaceous-Paleogene boundary section in eastern Montana, USA, constrained by carbonate clumped isotope paleothermometry. Geology, 42(4), pp.351-354.
+Tobin_14 <- read.csv(paste0(wd, "/Data/Tobin_etal_2014.csv"))
+T14 <- Tobin_14[,c(2,3,10)] #use d18Ow - value of water, corrected for fractionation in shells
+T14$Section <- "Hell Creek"
+T14$lat <- 47.5
+T14$lng <- -107
+T14$Origin <- "Tobin"
+#this one had d18O in VSMOW, so convert to VPDB so it matches the rest
+library(isogeochem)
+T14 <- T14 %>% mutate(
+  "d18O" = isogeochem::to_VPDB(d18Ow)
+)
+T14 <- T14[,-3] #remove col d18Ow
+#add paleomag reversals
+T14 <- T14 %>% mutate(
+  "Chron" = case_when(
+    (meter <= -26) ~ "C30n",
+    (meter > -26 & meter < 20) ~ "C29r",
+    (meter > 20) ~ "C29n"
+  )
+)
+T14 <- T14[order(-T14$meter), ] #sort by meter
+
+rm(Tobin_14)
+
+#Dinares-Turell etal 2014
+#Jaume Dinarès-Turell, Thomas Westerhold, Victoriano Pujalte, Ursula Röhl, Dick Kroon,
+#Astronomical calibration of the Danian stage (Early Paleocene) revisited: Settling chronologies of sedimentary records across the Atlantic and Pacific Oceans, Earth and Planetary Science Letters, Volume 405, 2014, Pages 119-131, ISSN 0012-821X, https://doi.org/10.1016/j.epsl.2014.08.027.
+DinaresTurell_14 <- read.csv(paste0(wd, "/Data/Dinares-Turell_2014.csv"))
+DT14 <- DinaresTurell_14[,c(1,3:7)]
+DT14 <- DT14 %>% rename(
+  "d13C" = "d13C_PDB",
+  "d18O" = "d18O_PDB",
+  "Age" = "Age..Ma."
+)
+DT14$Origin <- "Dinares_Turell"
+DT14$Section <- "Zumaia"
+rm(DinaresTurell_14)
+
+#reference data with Biozones 
+ref_dat <- rbind(euro, kef, SMdO)
+ref_dat <- ref_dat[order(ref_dat$Section, -ref_dat$meter), ] #sort by meter within sections
+
+#reference data with absolute age
+ref_dat_age <- rbind(DT14)
+ref_dat_age <- ref_dat_age[order(ref_dat_age$Section, -ref_dat_age$meter), ] #sort by meter within sections
+
+#reference data with magnetic geochron reversals
+ref_dat_mag <- rbind(T14)
+ref_dat_mag <- ref_dat_mag[order(ref_dat_mag$Section, -ref_dat_mag$meter), ] 
+
+```
+
+```{r, eval=F}
+##Only d13C data
+
 #Rachel Grandpre, Andrew Schauer, Kyle Samek, Anne Veeger, Peter Ward, David Fastovsky,
 #Testing the terrestrial δ13C Cretaceous–Paleogene (K–Pg) chemostratigraphic marker,
 #Palaeogeography, Palaeoclimatology, Palaeoecology, Volumes 381–382, 2013, Pages 67-75, ISSN 0031-0182,
@@ -167,16 +226,13 @@ ND <- Grandpre_13[,c(1,7,10:11)]
 ND <- ND %>% mutate(
   meter = Grandpre_13$Sample/100, #measured in cm relative to K/Pg
   Section = "Mud Buttes",
-  d18O = 0,
   Origin = "Grandpre",
   Biozone = "TBD"
 )
 ND <- ND[,c(2:9)] %>% rename(d13C = d13C_VPDB)
-
-
-
-ref_dat <- rbind(euro, kef, SMdO, ND)
+rm(Grandpre_13)
 ```
+
 
 ```{r}
 #Hull et al 2020 Impact Volcanism (d18O only)
@@ -232,7 +288,8 @@ odp_bind <- na.omit(odp_bind) #get rid of empty rows
 
 # Biozone - Time Conversion
 ```{r}
-#age values from:
+#age values spreadsheet
+ages_bins <- read.csv(paste0(wd, "/Data/Age_dates.csv"))
 
 #Sprain, C.J., Renne, P.R., Clemens, W.A. and Wilson, G.P., 2018. Calibration of chron C29r: New high-precision geochronologic and paleomagnetic constraints from the Hell Creek region, Montana. Bulletin, 130(9-10), pp.1615-1644.
 #Chron C29r duration 587 ± 53 ka
@@ -275,6 +332,8 @@ odp_bind <- na.omit(odp_bind) #get rid of empty rows
 #Alegret, Laia; Thomas, Ellen (2004): Benthic foraminiferal abundances at the Cretaceous/Paleogene boundary of ODP Hole 117-1049C at Blake Nose, Northwest Atlantic (Appendix A) [dataset]. PANGAEA, https://doi.org/10.1594/PANGAEA.695112, Supplement to: Alegret, L; Thomas, E (2004): Benthic foraminifera and environmental turnover across the Cretaceous/Paleogene boundary at Blake Nose (ODP Hole 1049C, Northwestern Atlantic). Palaeogeography, Palaeoclimatology, Palaeoecology, 208(1-2), 59-83, https://doi.org/10.1016/j.palaeo.2004.02.028
 forams_AT <- read.csv(paste0(wd, "/Data/Alegret_Thomas_2004_forams.csv"))
 
+#Birch, Heather; Schmidt, Daniela N.; Coxall, Helen K.; Kroon, Dick; Ridgwell, Andy (2021). Figure S1 - Locations of data; Figure S2 - The stratigraphic range of Palaeocene taxa at Site 1262; Figure S3 - Summed coefficient of variation metric (∑CV) ranked in order.; Table S2 – Ecological groupings used in this study.; Raw data (species, size and weights) from Ecosystem function after the K/Pg extinction: decoupling of marine carbon pump and diversity. The Royal Society. Journal contribution. https://doi.org/10.6084/m9.figshare.14754975.v1
+biodiv_B21 <- read.csv(paste0(wd, "/Data/Birch_208-1262_species_counts.csv"))
 ```
 
 # Set Up for Temporal Alignment
@@ -321,7 +380,7 @@ for( i in seq_along(unique(odp_H20_b$Site))){
 #save objects for use in next file
 save(d18O_ref, file = paste0(wd, "/Data/d18O_ref.RData"))
 
-save(test_data, align_data, ref_dat, wk_data,
+save(test_data, align_data, ref_dat, wk_data, ref_dat_age, ref_dat_mag,
      file = paste0(wd, "/Data/comp_dat.RData")) #save data objects we will use later
 
 rm(dat, name, i)
