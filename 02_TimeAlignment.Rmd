@@ -104,7 +104,7 @@ for(i in seq_along(unique(df_mag_join$Section))){
     meter_min = min(meter, na.rm = TRUE),
     meter_max = max(meter, na.rm = TRUE),
     rel_pos = ifelse(meter_max == meter_min, 0, #get relative position in meterage within that zone
-              (meter - meter_min) / (meter_max - meter_min)),,
+              (meter - meter_min) / (meter_max - meter_min)),
     Age = Bottom - rel_pos * (Bottom - Top)
   ) %>%
   ungroup()

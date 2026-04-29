@@ -2,6 +2,8 @@
 title: "FunctionalKPg"
 output: html_document
 date: "2026-01-23"
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -33,6 +35,11 @@ rm(me, i) #clean env
 
 ```
 
+```{r}
+#To Do:
+# Add a column for ocean depth
+# Add in Sierra's data(?)
+```
 
 ## Import Data
 
@@ -55,13 +62,15 @@ wk_data$Origin <- "Nolan"
 wk_data$Biozone <- "TBD"
 
 
+
 ```
 
 ```{r}
 #data from Trim Cane
 #cols to match:
 names(wk_data)
-
+library(tidyr)
+##############################################################################################################
 #Sosa-Montes de Oca, C. (2024). Intense changes in the main source of organic carbon to the ocean following the Cretaceous-Paleogene boundary (dataset). https://doi 10.17605/OSF.IO/ZMA9G
 
 tcc_SMdO24 <- read.csv(paste0(wd, "/Data/SMdO_TCC_2024.csv")) #read in dataset
@@ -86,6 +95,30 @@ sed_rates <- distinct(sed_rates, pick(Biozone), .keep_all = T) #filter to just o
 
 rm(tcc_SMdO24)
 
+###############################################################################################################
+#Sam Davies Thesis (2024)
+tcc_Sam <- read.csv(paste0(wd, "/Data/Davies_Thesis_Data.csv")) #read in dataset
+Sam <- tcc_Sam[,c("Site", "Taxa", "meter", "Strat_height_other", "Stage", "lat", "lng", "Biozone_macro", "Biozone_nano", "Biozone_foram", "d13C_PDB", "d18O_PDB", "Temp")]
+Sam$Biozone <- Sam$Biozone_foram
+
+Sam <- Sam %>% mutate(
+  Biozone = case_when(
+    meter == 0 ~ "KPg", #add zone info for boundary when meter = 0
+    Strat_height_other %in% c("Exo cost. General", "Extreme top of exogyra costata zone") ~ "D. iris/CC26b", #when strat height is "Exogyra costata" that means Maast,
+    Biozone_macro %in% c("Exogyra costata", "Discoscaphites iris") ~ "D. iris/CC26b", #Cret macro zonation goes to shorthand used by SMdO (above)
+    TRUE ~ Biozone_foram #for when none of those apply
+  )
+)
+Sam <- Sam %>% mutate(
+  Biozone = case_when(
+    Biozone == "" ~ Stage, #if none of those filled the Biozone column, use the assigned stage
+    TRUE ~ Biozone
+  )
+)
+Sam <- Sam %>% filter(
+  Biozone != "" #remove empty rows with no age designation
+)
+
 
 
 ```
@@ -93,7 +126,7 @@ rm(tcc_SMdO24)
 ```{r}
 #Other Data
 library(dplyr)
-
+###############################################################################################################
 #Jones etal 2023 - El Kef
 #Jones, Heather L.; al., et (2022). Supplemental Material: Stratigraphy of the Cretaceous/Paleogene (K/Pg) boundary at the Global Stratotype Section and Point (GSSP) in El Kef, Tunisia: New insights from the El Kef Coring Project. Geological Society of America. Journal contribution. https://doi.org/10.1130/GSAB.S.21445755.v1
 
@@ -115,7 +148,7 @@ kef<- kef %>% mutate(
 rm(elkef_J23)
 
 
-
+###############################################################################################################
 #Sepulveda et al 2019 - 
 #Sepúlveda, Julio; Alegret, Laia; Haddad, Emily; Cao, Changqun; Summons, Roger E; Thomas, Ellen (2019): Bulk elemental and stable isotope data across the Cretaceous-Paleogene boundary [dataset]. PANGAEA, https://doi.org/10.1594/PANGAEA.902759, 
 #Supplement to: Sepúlveda, Julio; Alegret, Laia; Thomas, Ellen; Haddad, Emily; Cao, Changqun; Summons, Roger E (2019): Stable Isotope Constraints on Marine Productivity Across the Cretaceous-Paleogene Mass Extinction. Paleoceanography and Paleoclimatology, 34(7), 1195-1217, https://doi.org/10.1029/2018PA003442
@@ -156,7 +189,7 @@ for (j in seq_along(unique(euro$Section))){
 euro <- euro2
 rm(euro2, subsect, euro_S19) #clean up env
 
-
+###############################################################################################################
 #Tobin etal 2014
 #Tobin, T.S., Wilson, G.P., Eiler, J.M. and Hartman, J.H., 2014. Environmental change across a terrestrial Cretaceous-Paleogene boundary section in eastern Montana, USA, constrained by carbonate clumped isotope paleothermometry. Geology, 42(4), pp.351-354.
 Tobin_14 <- read.csv(paste0(wd, "/Data/Tobin_etal_2014.csv"))
@@ -183,6 +216,7 @@ T14 <- T14[order(-T14$meter), ] #sort by meter
 
 rm(Tobin_14)
 
+###############################################################################################################
 #Dinares-Turell etal 2014
 #Jaume Dinarès-Turell, Thomas Westerhold, Victoriano Pujalte, Ursula Röhl, Dick Kroon,
 #Astronomical calibration of the Danian stage (Early Paleocene) revisited: Settling chronologies of sedimentary records across the Atlantic and Pacific Oceans, Earth and Planetary Science Letters, Volume 405, 2014, Pages 119-131, ISSN 0012-821X, https://doi.org/10.1016/j.epsl.2014.08.027.
@@ -214,6 +248,7 @@ ref_dat_mag <- ref_dat_mag[order(ref_dat_mag$Section, -ref_dat_mag$meter), ]
 ```{r, eval=F}
 ##Only d13C data
 
+###############################################################################################################
 #Rachel Grandpre, Andrew Schauer, Kyle Samek, Anne Veeger, Peter Ward, David Fastovsky,
 #Testing the terrestrial δ13C Cretaceous–Paleogene (K–Pg) chemostratigraphic marker,
 #Palaeogeography, Palaeoclimatology, Palaeoecology, Volumes 381–382, 2013, Pages 67-75, ISSN 0031-0182,
@@ -235,6 +270,7 @@ rm(Grandpre_13)
 
 
 ```{r}
+###############################################################################################################
 #Hull et al 2020 Impact Volcanism (d18O only)
 #     Pincelli M. Hull et al. On impact and volcanism across the Cretaceous-Paleogene boundary.Science367,266-272(2020).DOI:10.1126/science.aay5055
 odp_H20_f <- read.csv(paste0(wd, "/Data/Hull_d18O_foram.csv"))[,c(1,2,3,5,9,12,13)]
@@ -259,6 +295,7 @@ unique(odp_bind$Study)
 odp_Hull <- odp_bind %>% filter(Study == "this study") #separate data from Hull etal 2020
 #this d18O data has matching d13C data published in Alegret etal 2012:
 
+###############################################################################################################
 #Alegret et al 2012 - d18O used by Hull et al 2020, here is corr d13C data
 #http://www.pnas.org/lookup/suppl/doi:10.1073/pnas.1110601109/-/DCSupplemental/pnas.1110601109_SI.pdf?targetid=STXT
 #L. Alegret, E. Thomas, & K.C. Lohmann, End-Cretaceous marine mass extinction not caused by productivity collapse, Proc. Natl. Acad. Sci. U.S.A. 109 (3) 728-732, https://doi.org/10.1073/pnas.1110601109 (2012).
@@ -271,6 +308,7 @@ odp_A12$Origin <- "Alegret" #origin of data is Alegret etal 2012
 
 rm(odp_Alegret12)
 
+###############################################################################################################
 #Birch et al 2007
 #https://doi.org/10.6084/m9.figshare.c.5459523
 
@@ -327,11 +365,12 @@ ages_bins <- read.csv(paste0(wd, "/Data/Age_dates.csv"))
 
 ```{r}
 #foram data
-
+###############################################################################################################
 #Alegret & Thomas, 2004
 #Alegret, Laia; Thomas, Ellen (2004): Benthic foraminiferal abundances at the Cretaceous/Paleogene boundary of ODP Hole 117-1049C at Blake Nose, Northwest Atlantic (Appendix A) [dataset]. PANGAEA, https://doi.org/10.1594/PANGAEA.695112, Supplement to: Alegret, L; Thomas, E (2004): Benthic foraminifera and environmental turnover across the Cretaceous/Paleogene boundary at Blake Nose (ODP Hole 1049C, Northwestern Atlantic). Palaeogeography, Palaeoclimatology, Palaeoecology, 208(1-2), 59-83, https://doi.org/10.1016/j.palaeo.2004.02.028
 forams_AT <- read.csv(paste0(wd, "/Data/Alegret_Thomas_2004_forams.csv"))
 
+###############################################################################################################
 #Birch, Heather; Schmidt, Daniela N.; Coxall, Helen K.; Kroon, Dick; Ridgwell, Andy (2021). Figure S1 - Locations of data; Figure S2 - The stratigraphic range of Palaeocene taxa at Site 1262; Figure S3 - Summed coefficient of variation metric (∑CV) ranked in order.; Table S2 – Ecological groupings used in this study.; Raw data (species, size and weights) from Ecosystem function after the K/Pg extinction: decoupling of marine carbon pump and diversity. The Royal Society. Journal contribution. https://doi.org/10.6084/m9.figshare.14754975.v1
 biodiv_B21 <- read.csv(paste0(wd, "/Data/Birch_208-1262_species_counts.csv"))
 ```
