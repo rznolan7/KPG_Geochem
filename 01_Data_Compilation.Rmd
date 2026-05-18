@@ -373,6 +373,23 @@ forams_AT <- read.csv(paste0(wd, "/Data/Alegret_Thomas_2004_forams.csv"))
 ###############################################################################################################
 #Birch, Heather; Schmidt, Daniela N.; Coxall, Helen K.; Kroon, Dick; Ridgwell, Andy (2021). Figure S1 - Locations of data; Figure S2 - The stratigraphic range of Palaeocene taxa at Site 1262; Figure S3 - Summed coefficient of variation metric (∑CV) ranked in order.; Table S2 – Ecological groupings used in this study.; Raw data (species, size and weights) from Ecosystem function after the K/Pg extinction: decoupling of marine carbon pump and diversity. The Royal Society. Journal contribution. https://doi.org/10.6084/m9.figshare.14754975.v1
 biodiv_B21 <- read.csv(paste0(wd, "/Data/Birch_208-1262_species_counts.csv"))
+biodiv <- biodiv_B21[,5:70]
+biodiv <- biodiv %>% rename(
+  "Age" = "Age.model..ka...La2011..Determinded.after.Din...."
+) %>% mutate(
+  Age = Age / 1000 #change to Ma for consistency
+)
+
+#alpha diversity estimates
+bin_div <- biodiv[,2:66] #exclude age row
+bin_div[, -1] <- ifelse(bin_div[, -1] > 0, 1, 0) #convert to presence-absence
+bin_div$Spp_count <- rowSums(bin_div)
+div <- as.data.frame(biodiv[,c(1)])
+div$Spp_total <- bin_div$Spp_count #get data frame of just age and species count
+div <- div %>% rename(
+  "Age" = "biodiv[, c(1)]"
+)
+
 ```
 
 # Set Up for Temporal Alignment
@@ -419,7 +436,7 @@ for( i in seq_along(unique(odp_H20_b$Site))){
 #save objects for use in next file
 save(d18O_ref, file = paste0(wd, "/Data/d18O_ref.RData"))
 
-save(test_data, align_data, ref_dat, wk_data, ref_dat_age, ref_dat_mag,
+save(test_data, align_data, ref_dat, wk_data, ref_dat_age, ref_dat_mag, div,
      file = paste0(wd, "/Data/comp_dat.RData")) #save data objects we will use later
 
 rm(dat, name, i)

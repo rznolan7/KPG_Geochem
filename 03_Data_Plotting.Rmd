@@ -337,6 +337,7 @@ p_C_age <- ggplot(data = thisdata, aes(x = Age, y = d13C)) +
     geom_point(color = "#4b8c3c", shape = 2) + #add point data
     ylim((min(thisdata$d13C)-0.01), (max(thisdata$d13C)+0.01)) + #set axis limits to just larger than data values
   
+  
     coord_flip() + #flip x and y so that meter is vertical
     scale_x_reverse() +
   
@@ -364,6 +365,64 @@ setwd(paste0(wd, "/Figures"))
 ggsave("p_d13C_age.png", width = 8, height = 6)
 setwd(wd)
 ```
+
+```{r, fig.height=8, fig.width=4}
+library(gridExtra)
+p_CO <- ggplot(data = thisdata, aes(x = Age, y = d13C)) +
+    theme_bw() +
+    geom_point(color = "#4b8c3c", shape = 2) + #add point data
+    geom_point(data = thisdata, aes(x = Age, y = d18O), color = "blue4", shape = 3)+
+    xlim((min(thisdata$Age)-0.01), (max(thisdata$Age)+0.01)) +
+
+  
+    coord_flip() + #flip x and y so that meter is vertical
+    scale_x_reverse() +
+  
+    #geom_smooth(color = "#17400d", fill = "#aecca7") + #add smoothed loess fit
+    geom_smooth(data = thisdata, aes(x = Age, y = d13C), color = "#4b8c3c")+
+    geom_smooth(data = thisdata, aes(x = Age, y = d18O), color = "blue4")+
+    geom_hline(aes(yintercept = 0)) + #add vertical line at d13C = 0
+  
+    geom_vline(aes(xintercept = 66.052), color = "#994b6b") + #add horizontal line at K-Pg boundary
+  
+    labs(y = "Bulk d13C and d18O(per mil)", 
+         x = "Age", 
+         title = "Geochem Plots (Absolute Age)",
+         caption = "K-Pg Boundary at 66.052 Ma")  #add axis labels
+
+plot(p_CO)
+ggsave("p_CO_alldat.png", width = 4, height = 8)
+
+min_age <- min(thisdata$Age)
+max_age <- max(thisdata$Age)
+div <- div %>% filter(
+  Age > min_age
+)
+p_foram <- ggplot(data = div, aes(x = Age, y = Spp_total)) +
+    theme_bw() +
+    geom_point(color = "purple4", shape = 1) + #add point data
+    xlim((min(thisdata$Age)-0.01), (max(thisdata$Age)+0.01)) +
+    coord_flip() + #flip x and y so that meter is vertical
+    scale_x_reverse() +
+  
+    #geom_smooth(color = "#17400d", fill = "#aecca7") + #add smoothed loess fit
+    geom_smooth(color="purple3")+
+    geom_hline(aes(yintercept = 0)) + #add vertical line at d13C = 0
+  
+    geom_vline(aes(xintercept = 66.052), color = "#994b6b") + #add horizontal line at K-Pg boundary
+  
+    labs(y = "Foram Species Count", 
+         x = "Age", 
+         title = "Foram Species Counts (Birch et al. 2021)",
+         caption = "K-Pg Boundary at 66.052 Ma")  #add axis labels
+
+plot(p_foram)
+ggsave("p_forams_alldat.png", width = 4, height = 8)
+    
+p_grid <- grid.arrange(p_CO, p_foram, ncol = 2)  
+
+```
+
 
 ```{r}
 #plot d13C and d18O together
