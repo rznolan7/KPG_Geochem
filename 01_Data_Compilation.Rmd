@@ -1,5 +1,5 @@
 ---
-title: "FunctionalKPg"
+title: "Data Compilation - KPg Geochem and Diversity"
 output: html_document
 date: "2026-01-23"
 editor_options: 
@@ -50,7 +50,7 @@ names(mydata)
 #pick relevant columns to add to working data
 wk_data <- mydata[,c(5,6,12:15)] #meter, Section, d13C, d18O, lat, lng
 
-#rename columns to make it easier to see whats happening (new_name = old_name)
+#rename columns to make it easier to see whats happening (dplyr uses format "new_name" = "old_name")
 library(dplyr)
 wk_data <- wk_data %>% rename(
   "d13C" = "d.13C.12C..VPDB",
@@ -59,37 +59,35 @@ wk_data <- wk_data %>% rename(
 
 #add column to working data that indicates the data is mine
 wk_data$Origin <- "Nolan"
-wk_data$Biozone <- "TBD"
-
+wk_data$Biozone <- "TBD" #biozone will get assigned in "Time Alignment.Rmd"
+wk_data$Elevation <- -50 #set to 50m ocean depth
 
 
 ```
 
 ```{r}
-#data from Trim Cane
-#cols to match:
-names(wk_data)
+#published data from Trim Cane Creek
 library(tidyr)
+
 ##############################################################################################################
 #Sosa-Montes de Oca, C. (2024). Intense changes in the main source of organic carbon to the ocean following the Cretaceous-Paleogene boundary (dataset). https://doi 10.17605/OSF.IO/ZMA9G
-
-tcc_SMdO24 <- read.csv(paste0(wd, "/Data/SMdO_TCC_2024.csv")) #read in dataset
+tcc_SMdO24 <- read.csv(paste0(wd, "/Data/SMdO_TCC_2024.csv"))
 
 #Sosa Montes de Oca et al 2024 calculated sedimentation rates within biozones for TCC:
-sed_rates <- read.csv(paste0(wd, "/Data/SMdO_TCC_Biozones.csv")) #read in data
+sed_rates <- read.csv(paste0(wd, "/Data/SMdO_TCC_Biozones.csv"))
 
 SMdO <- merge.data.frame(tcc_SMdO24[,c("Sample", "meter", "d13C_VPDB", "d18O_VPDB")], sed_rates[,c("Sample", "Biozone")], by = "Sample")
 
 SMdO$Section <- "TCC" #label as from Trim Cane
 SMdO$Origin <- "Sosa-Montes_de_Oca" #label origin of data
+SMdO$Elevation <- -50 #set to 50m ocean depth
 
 #add lat and lng from my data for TCC-F
 SMdO$lat <- (mydata %>% filter(Section == "TCC-F"))$lat[1]
 SMdO$lng <- (mydata %>% filter(Section == "TCC-F"))$lng[1]
 
 SMdO <- SMdO %>% rename( "d13C" = "d13C_VPDB", "d18O" = "d18O_VPDB") #rename for matching 
-SMdO <- SMdO[,-1]
-
+SMdO <- SMdO[,-1] #don't need sample names for this analysis
 
 sed_rates <- distinct(sed_rates, pick(Biozone), .keep_all = T) #filter to just one row per biozone
 
@@ -361,24 +359,32 @@ ages_bins <- read.csv(paste0(wd, "/Data/Age_dates.csv"))
 #P1a defined as 
 ```
 
-##Foraminiferal Diversity
+## Biodiversity Estimates
+
+### Forams
 
 ```{r}
-#foram data
 ###############################################################################################################
 #Alegret & Thomas, 2004
 #Alegret, Laia; Thomas, Ellen (2004): Benthic foraminiferal abundances at the Cretaceous/Paleogene boundary of ODP Hole 117-1049C at Blake Nose, Northwest Atlantic (Appendix A) [dataset]. PANGAEA, https://doi.org/10.1594/PANGAEA.695112, Supplement to: Alegret, L; Thomas, E (2004): Benthic foraminifera and environmental turnover across the Cretaceous/Paleogene boundary at Blake Nose (ODP Hole 1049C, Northwestern Atlantic). Palaeogeography, Palaeoclimatology, Palaeoecology, 208(1-2), 59-83, https://doi.org/10.1016/j.palaeo.2004.02.028
+#Latitude: 30.142270 * Longitude: -76.112110 * Date/Time: 1997-01-16T00:30:00 * Elevation: -2670.8 m
 forams_AT <- read.csv(paste0(wd, "/Data/Alegret_Thomas_2004_forams.csv"))
+biodiv_AT <- forams_AT[,c(2,3,5:139)] #pick meter, biozone and spp names, rows are in absolute abundance
+rm(forams_AT)
 
 ###############################################################################################################
 #Birch, Heather; Schmidt, Daniela N.; Coxall, Helen K.; Kroon, Dick; Ridgwell, Andy (2021). Figure S1 - Locations of data; Figure S2 - The stratigraphic range of Palaeocene taxa at Site 1262; Figure S3 - Summed coefficient of variation metric (∑CV) ranked in order.; Table S2 – Ecological groupings used in this study.; Raw data (species, size and weights) from Ecosystem function after the K/Pg extinction: decoupling of marine carbon pump and diversity. The Royal Society. Journal contribution. https://doi.org/10.6084/m9.figshare.14754975.v1
-biodiv_B21 <- read.csv(paste0(wd, "/Data/Birch_208-1262_species_counts.csv"))
-biodiv <- biodiv_B21[,5:70]
-biodiv <- biodiv %>% rename(
-  "Age" = "Age.model..ka...La2011..Determinded.after.Din...."
+forams_B21 <- read.csv(paste0(wd, "/Data/Birch_208-1262_species_counts.csv"))
+biodiv_B21 <- forams_B21[,4:70]
+biodiv_B21 <- biodiv_B21 %>% rename(
+  "Age" = "Age.model..ka...La2011..Determinded.after.Din....",
+  "Biozone" = "Plank.foram.zone"
 ) %>% mutate(
   Age = Age / 1000 #change to Ma for consistency
 )
+rm(forams_B21)
+
+
 
 #alpha diversity estimates
 bin_div <- biodiv[,2:66] #exclude age row
@@ -391,6 +397,22 @@ div <- div %>% rename(
 )
 
 ```
+
+### Macrofossils
+```{r}
+####################################################################################################
+#Edie, S.M., Collins, K.S. and Jablonski, D., 2025. The end-Cretaceous mass extinction restructured functional diversity but failed to configure the modern marine biota. Science Advances, 11(21), p.eadv1171.
+#https://doi.org/10.25573/data.28046414 link to supplement data
+mollusc_E <- read.csv(paste0(wd, "/Data/Edie_etal_2025_Biodiv.csv"))
+
+#Lyson, T.R., Miller, I.M., Bercovici, A.D., Weissenburger, K., Fuentes, A.J., Clyde, W.C., Hagadorn, J.W., Butrim, M.J., Johnson, K.R., Fleming, R.F. and Barclay, R.S., 2019. Exceptional continental record of biotic recovery after the Cretaceous–Paleogene mass extinction. Science, 366(6468), pp.977-983.
+#Flora and Vertebrate Taxa from Corral Bluffs
+vert_L <- read.csv(paste0(wd, "/Data/Lyson_vert.csv"))
+gymno_L <- read.csv(paste0(wd, "/Data/Lyson_flora_div.csv"), skip = 1)
+
+
+```
+
 
 # Set Up for Temporal Alignment
 
