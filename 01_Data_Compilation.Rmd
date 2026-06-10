@@ -66,12 +66,29 @@ wk_data$Elevation <- -50 #set to 50m ocean depth
 ```
 
 ```{r}
+#Table to collate info about each section
+section_info <- wk_data
+section_info <- section_info[!duplicated(section_info$Section),] #get just one row per section
+section_info <- section_info[,c("Section", "lat", "lng", "Origin", "Elevation")]
+
+section_info$PubAuthor <- NA
+section_info$PubYear <- NA
+section_info$d13C <- TRUE
+section_info$d18O <- TRUE
+section_info$biostrat <- FALSE
+
+info <- names(section_info)
+```
+
+```{r}
 #published data from Trim Cane Creek
 library(tidyr)
 
 ##############################################################################################################
 #Sosa-Montes de Oca, C. (2024). Intense changes in the main source of organic carbon to the ocean following the Cretaceous-Paleogene boundary (dataset). https://doi 10.17605/OSF.IO/ZMA9G
 tcc_SMdO24 <- read.csv(paste0(wd, "/Data/SMdO_TCC_2024.csv"))
+SMdO_info <- c("TCC_F_24", 33.4, -88.0, "Sosa-Montes de Oca", -50, "Sosa-Montes de Oca etal", 2024, TRUE, TRUE, TRUE)
+section_info <- rbind(section_info, SMdO_info)
 
 #Sosa Montes de Oca et al 2024 calculated sedimentation rates within biozones for TCC:
 sed_rates <- read.csv(paste0(wd, "/Data/SMdO_TCC_Biozones.csv"))
@@ -91,10 +108,13 @@ SMdO <- SMdO[,-1] #don't need sample names for this analysis
 
 sed_rates <- distinct(sed_rates, pick(Biozone), .keep_all = T) #filter to just one row per biozone
 
-rm(tcc_SMdO24)
+rm(tcc_SMdO24, SMdO_info)
 
 ###############################################################################################################
 #Sam Davies Thesis (2024)
+SD_info <- c("TCC_F_SD", 33.4, -88.0, "Sam Davies", -50, NA, NA, TRUE, TRUE, TRUE)
+section_info <- rbind(section_info, SD_info)
+
 tcc_Sam <- read.csv(paste0(wd, "/Data/Davies_Thesis_Data.csv")) #read in dataset
 Sam <- tcc_Sam[,c("Site", "Taxa", "meter", "Strat_height_other", "Stage", "lat", "lng", "Biozone_macro", "Biozone_nano", "Biozone_foram", "d13C_PDB", "d18O_PDB", "Temp")]
 Sam$Biozone <- Sam$Biozone_foram
@@ -117,7 +137,7 @@ Sam <- Sam %>% filter(
   Biozone != "" #remove empty rows with no age designation
 )
 
-
+rm(SD_info)
 
 ```
 
@@ -132,6 +152,7 @@ library(dplyr)
 #Hole A - KPg is in core 16
 #Holes B and C are further up in Danian
 #Holes D and D have KPg at core 10
+
 elkef_J23 <- read.csv(paste0(wd, "/Data/Jones_etal_2023_ElKef.csv"))
 elkef_J23$Section <- paste0(elkef_J23$Hole, "_", elkef_J23$Core)
 kef <- elkef_J23[, c("Composite.core.depth..mcd.", "Section", "d13C", "d18O", "Biozone")]
@@ -142,8 +163,18 @@ kef$lng <- 8.6
 kef<- kef %>% mutate(
   meter = ((meter - 61.42)*(-1)) #set so KPg is at 0, with pos values above KPg and neg below
 )
+kef$Elevation <- -250
 
-rm(elkef_J23)
+Kef_info <- kef[!duplicated(kef$Section),] 
+Kef_info <- Kef_info[,c("Section", "lat", "lng", "Origin", "Elevation")]
+Kef_info$PubAuthor <- "Jones etal"
+Kef_info$PubYear <- 2023
+Kef_info$d13C <- TRUE
+Kef_info$d18O <- TRUE
+Kef_info$biostrat <- TRUE
+
+section_info <- rbind(section_info, Kef_info)
+rm(elkef_J23, Kef_info)
 
 
 ###############################################################################################################
@@ -160,7 +191,7 @@ euro <- euro_S19[,c(1,3:4,6,10,12)] %>% rename("Section" = "Event",
                                       "lng" = "Longitude")
 euro$Biozone <- "TBD"
 euro$Origin <- "Sepulveda"
-#euro <- euro %>% filter(Section != "El-Kef") #don't use El Kef, since we have that already above
+
 
 # unique(euro$Section) Order of sections in data
 # [1] "El-Kef"           "Ain-Settara"      "Caravaca_outcrop" "Agost"            "Bidart"           "Loya"           
@@ -186,6 +217,9 @@ for (j in seq_along(unique(euro$Section))){
 #now that we have added the biozones we can replace the original data with the new set
 euro <- euro2
 rm(euro2, subsect, euro_S19) #clean up env
+
+euro_info <- euro[!duplicated(euro$Section),] 
+
 
 ###############################################################################################################
 #Tobin etal 2014
@@ -251,6 +285,8 @@ ref_dat_mag <- ref_dat_mag[order(ref_dat_mag$Section, -ref_dat_mag$meter), ]
 #Testing the terrestrial δ13C Cretaceous–Paleogene (K–Pg) chemostratigraphic marker,
 #Palaeogeography, Palaeoclimatology, Palaeoecology, Volumes 381–382, 2013, Pages 67-75, ISSN 0031-0182,
 #https://doi.org/10.1016/j.palaeo.2013.04.015.
+
+#TERRESTRIAL
 Grandpre_13 <- read.csv(paste0(wd, "/Data/Grandpre_etal_2013.csv"))
 Grandpre_13$lat <- 46.25
 Grandpre_13$lng <- -103.9
