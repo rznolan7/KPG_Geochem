@@ -2,6 +2,8 @@
 title: "FunctionalKPg"
 output: html_document
 date: "2026-01-23"
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -524,6 +526,54 @@ p_dist <- ggplot(data = data) +
 plot(p_dist)
 setwd(paste0(wd, "/Figures"))
 ggsave("p_dist.png", width = 8, height = 5.5)
+setwd(wd)
+```
+
+## Plots By Water Depth
+```{r}
+data <- ref_dat_age #using all data to show differences by distance
+library(terra)
+library(dplyr)
+data <- data %>% mutate(
+  Depth = case_when(
+    Elevation %in% c(-1000) ~ "~1000 m",
+    Elevation %in% c(-800, -600) ~ "~750 m",
+    Elevation %in% c(-350, -250) ~ "~300 m",
+    Elevation %in% c(-125, -50) ~ "50 to 125 m",
+    Elevation %in% c(1) ~ "Terrestrial",
+  ),
+  Depth = factor(Depth, levels = c("~1000 m", "~750 m", "~300 m", "50 to 125 m", "Terrestrial"))
+)
+data <- data %>% filter(Elevation != -1000) #get rid of -1000 for the moment
+
+p_depth <- ggplot(data = data) +
+    theme_bw() +
+  #plot d13C
+    geom_point(aes(x = Age, y = d13C), color = "#6e1a37", shape = 2) + #add point data
+    #geom_smooth(aes(x = meter, y = d13C), color = "#6e1a37", fill = "#d75656") + #add smoothed loess fit
+  
+  #plot d18O
+    #geom_point(aes(x = Age, y = d18O), color = "#021a54", shape = 2) + #add point data
+    #geom_smooth(aes(x = meter, y = d18O), color = "#021a54", fill = "#b1c7de") + #add smoothed loess fit
+  
+    coord_flip() + #flip x and y so that meter is vertical
+  
+    scale_x_reverse(limits = c(66.4, 65.5)) +
+
+    geom_hline(aes(yintercept = 0)) + #add vertical line at d13C = 0
+  
+    geom_vline(aes(xintercept = 66.052), color = "#994b6b") + #add horizontal line at K-Pg boundary
+  
+    labs(y = "per mil", 
+         x = "Age (Ma)", 
+         title = "d13C By Water Depth",
+         caption = "K-Pg Boundary at 66.052 Ma") + #add axis labels
+  
+    facet_grid(. ~ Depth)  #break up into section plots
+
+plot(p_depth)
+setwd(paste0(wd, "/Figures"))
+ggsave("p_depth.png", width = 8, height = 5.5)
 setwd(wd)
 ```
 

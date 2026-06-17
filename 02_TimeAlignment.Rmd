@@ -3,6 +3,8 @@ title: "02_TimeAlignment"
 author: "Rhiannon Nolan"
 date: "2026-04-14"
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -114,6 +116,11 @@ for(i in seq_along(unique(df_mag_join$Section))){
 ref_dat_age <- rbind(ref_dat_age, mag_ref[,c(colnames(ref_dat_age))]) #add to ref data w ages
 ##go back in and keep biozone so i can make some pretty plots later
 rm(mag_ref, dat, df_mag_join, mag)
+```
+
+```{r}
+#Assign my data ages based on the simple age assignment
+
 ```
 
 

@@ -239,7 +239,7 @@ euro_n <- euro %>% count(Section)
 euro_info <- left_join(euro_info, euro_n, by = "Section")
 
 section_info <- rbind(section_info, euro_info)
-
+rm(euro_n, euro_info)
 
 ###############################################################################################################
 #Tobin etal 2014
@@ -268,7 +268,7 @@ T14 <- T14 %>% mutate(
 T14 <- T14[order(-T14$meter), ] #sort by meter
 T14_info <- c(T14$Section[1], T14$lat[1], T14$lng[1], T14$Origin[1], T14$Elevation[1], "Tobin et al.", 2014, TRUE, TRUE, FALSE, nrow(T14))
 section_info <- rbind(section_info, T14_info)
-rm(Tobin_14)
+rm(Tobin_14, T14_info)
 
 ###############################################################################################################
 #Dinares-Turell etal 2014
@@ -288,6 +288,7 @@ DT14$Elevation <- -1000
 rm(DinaresTurell_14)
 DT14_info <- c(DT14$Section[1], DT14$lat[1], DT14$lng[1], DT14$Origin[1], DT14$Elevation[1], "Dinares Turell et al.", 2014, TRUE, TRUE, FALSE, nrow(DT14))
 section_info <- rbind(section_info, DT14_info)
+rm(DT14_info)
 
 #reference data with Biozones 
 ref_dat <- rbind(euro, kef, SMdO)
@@ -301,6 +302,7 @@ ref_dat_age <- ref_dat_age[order(ref_dat_age$Section, -ref_dat_age$meter), ] #so
 ref_dat_mag <- rbind(T14)
 ref_dat_mag <- ref_dat_mag[order(ref_dat_mag$Section, -ref_dat_mag$meter), ] 
 
+rm(euro, kef, SMdO, DT14, T14)
 ```
 
 ```{r}
@@ -330,7 +332,7 @@ ND <- ND[,c(2:9)] %>% rename(d13C = d13C_VPDB)
 ND_info <- c(ND$Section[1], ND$lat[1], ND$lng[1], ND$Origin[1], ND$Elevation[1], "Grandpre et al.", 2013, "d13C" %in% colnames(ND), "d18O" %in% colnames(ND), FALSE, nrow(ND))
 section_info <- rbind(section_info, ND_info)
 
-rm(Grandpre_13)
+rm(Grandpre_13, ND_info)
 ```
 
 
@@ -361,6 +363,7 @@ odp_bind <- odp_bind %>% mutate(
   )
 )
 odp_bind$Elevation <- -4000
+odp_bind$d13C <- NA
 
 #list original studies (to get d13C data where available, and lat-long)
 unique(odp_bind$Study)
@@ -368,38 +371,49 @@ unique(odp_bind$Study)
 odp_Hull <- odp_bind %>% filter(Study == "Hull et al. 2020") #separate data from Hull etal 2020
 odp_comp <- odp_bind %>% filter(Study != "Hull et al. 2020") #all others
 
-
+#########################################
 #add d13C data from other studies as available
-odp_1267 <- read.csv(paste0(wd, "/Data/Hull_1267.csv"))[,c(11:13)]
-odp_1267 <- odp_1267 %>% rename("meter" = "rmcd")
-odp_1267$Site <- "ODP 1267"
-odp_Hull <- left_join(odp_Hull, odp_1267, by = c("Site","meter", "d18O"))
+odp_1267 <- read.csv(paste0(wd, "/Data/Hull_1267.csv")) #this data doesn't appear to match the compiled data so I'll replace the compiled data for ODP 1267 with this dataframe
+odp_Hull <- odp_Hull %>% filter(Site != "ODP 1267") #remove ODP 1267
+#format dataframe
+odp_1267 <- odp_1267 %>% rename(
+  "meter" = "rmcd") %>% mutate(
+  Age_KPg = (age.DT14-66.022)*(-1), #Dinares-Taurel age model puts KPg at 66.022 Ma
+  #Temp = isogeochem::temp_d18O(to_VSMOW(d18O), d18O_H2O_VSMOW=1, min = "calcite", eq = "ONeil69"),
+  Elevation = -4000,
+  Type = "d18O_bulk",
+  Study = odp_Hull$Study[1],
+  Site = "ODP 1267",
+  Temp = NA
+)
+odp_Hull <- rbind(odp_Hull, odp_1267[,c("Type","Study","Site","meter","Age_KPg","d18O","Temp","Elevation","d13C")])
 
+##########################################
 odp_1209 <- read.csv(paste0(wd, "/Data/Hull_1209.csv"))[,c(10,12,13,14)]
 odp_1209$Site <- "ODP 1209"
 odp_1209 <- odp_1209 %>% rename("meter" = "Depth..rmcd.adj.",
                                 "Type" = "Material")
 odp_1209 <- odp_1209 %>% mutate(
   "Type" = case_when(
-    Type %in% c("bulk forams", "Woodringina", "M. angulata", "P. uncinata", "P. inconstans", "P. pseudoinconstans", "P. taurica") ~ "d18O_foram",
+    Type %in% c("bulk forams ", "Woodringina", "M. angulata", "P. uncinata", "P. inconstans", "P. pseudoinconstans", "P. taurica") ~ "d18O_foram",
   Type == "bulk" ~ "d18O_bulk"
   )
 )
 odp_Hull <- left_join(odp_Hull, odp_1209, by = c("Type", "Site","meter", "d18O"))
 
+#collapse the new d13C columns together
+odp_Hull <- odp_Hull %>% mutate(
+  d13C = coalesce(d13C.x, d13C.y)
+)
+
+#########################################
+#ODP 1262 data from published sources
 odp_1262 <- read.csv(paste0(wd, "/Data/Hull_1262.csv"))[,c(2,3,5,7)]
 odp_1262$Site <- "ODP 1262"
 odp_1262 <- odp_1262 %>% rename("Study" = "Source",
                                 "meter" = "mcd"
                                 )
 odp_comp <- left_join(odp_comp, odp_1262, by = c("Site", "Study", "meter", "d18O"))
-
-
-
-
-unique(odp_1262$Core)
-
-#this d18O data has matching d13C data published in Alegret etal 2012:
 
 ###############################################################################################################
 #Alegret et al 2012 - d18O used by Hull et al 2020, here is corr d13C data
@@ -427,7 +441,7 @@ odp_bind <- na.omit(odp_bind) #get rid of empty rows
 
 
 
-rm(odp_H20_b, odp_H20_f, odp_1209, odp_1262, odp_1267, odp_bind)
+rm(odp_H20_f, odp_1209, odp_1262, odp_1267, odp_bind)
 ```
 
 # Biozone - Time Conversion
@@ -566,7 +580,7 @@ for( i in seq_along(unique(odp_H20_b$Site))){
 #save objects for use in next file
 save(d18O_ref, file = paste0(wd, "/Data/d18O_ref.RData"))
 
-save(test_data, align_data, ref_dat, wk_data, ref_dat_age, ref_dat_mag, div,
+save(test_data, align_data, ref_dat, wk_data, ref_dat_age, ref_dat_mag,
      file = paste0(wd, "/Data/comp_dat.RData")) #save data objects we will use later
 
 rm(dat, name, i)
